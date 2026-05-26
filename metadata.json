@@ -1,0 +1,6 @@
+{
+  "name": "FLANX",
+  "description": "FLANX - Estrutura pronta para você empreender. Área do Franqueador (Back-office/Controle) e Área do Franqueado (Front-office/Vendas).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
