@@ -5,6 +5,7 @@ import PortalView from './components/PortalView';
 import HierarchyView from './components/HierarchyView';
 import RecruitmentView from './components/RecruitmentView';
 import AdminControlView from './components/AdminControlView';
+import PresentationView from './components/PresentationView';
 import { 
   Building2, 
   Smartphone, 
@@ -20,7 +21,8 @@ import {
   UserPlus,
   ShieldCheck,
   ChevronRight,
-  ClipboardList
+  ClipboardList,
+  Award
 } from 'lucide-react';
 
 export default function App() {
@@ -184,8 +186,8 @@ export default function App() {
   ]);
 
   // Master views configuration
-  // 'franchisor' (Control) | 'franchisee' (Execution) | 'public_onboarding' (Onboarding page)
-  const [appRole, setAppRole] = useState<'franchisor' | 'franchisee' | 'public_onboarding'>('franchisee');
+  // 'franchisor' (Control) | 'franchisee' (Execution) | 'public_onboarding' (Onboarding page) | 'business_presentation' (Pitch Deck)
+  const [appRole, setAppRole] = useState<'franchisor' | 'franchisee' | 'public_onboarding' | 'business_presentation'>('business_presentation');
 
   // Sub tab inside the Franchisee view
   // 'virtual_office' | 'academy' | 'ecosystem_info'
@@ -470,6 +472,19 @@ export default function App() {
               <UserPlus className="w-4 h-4 text-black stroke-[2.5]" />
               <span>✨ Página Pública de Recrutamento</span>
             </button>
+
+            {/* Business Presentation Pitch Deck */}
+            <button
+              onClick={() => setAppRole('business_presentation')}
+              className={`py-2 px-3.5 font-sans font-black text-xs uppercase transition-all border-2 border-black flex items-center gap-2 ${
+                appRole === 'business_presentation'
+                  ? 'bg-amber-400 text-black shadow-none translate-x-[1px] translate-y-[1px]'
+                  : 'bg-white text-black hover:bg-slate-50 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
+              }`}
+            >
+              <Award className="w-4 h-4 text-black stroke-[2.5]" />
+              <span>📊 Apresentação de Negócios / Pitch</span>
+            </button>
           </div>
 
           {/* SIMULATION RESET UTILITY */}
@@ -625,6 +640,14 @@ export default function App() {
                 </>
               )}
             </div>
+          )}
+
+          {/* ROLE 4: BUSINESS PRESENTATION PITCH DECK */}
+          {appRole === 'business_presentation' && (
+            <PresentationView 
+              onGoToOnboarding={() => setAppRole('public_onboarding')}
+              globalSplitRate={globalSplitRate}
+            />
           )}
 
           {/* ROLE 3: PUBLIC RECRUITMENT PAGE */}
