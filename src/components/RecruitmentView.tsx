@@ -35,13 +35,15 @@ export default function RecruitmentView({ onRegisterSubmit }: RecruitmentViewPro
         </span>
         
         <h1 className="text-4xl md:text-5xl font-sans font-black tracking-tight text-black leading-tight uppercase">
-          Abra seu Próprio Negócio <br />
-          com o Catálogo de Soluções do <span className="bg-amber-400 border-2 border-black px-3 py-1 text-black font-black pb-2 inline-block shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">HUB</span>
+          Comece Seu Negócio <span className="bg-amber-400 border-2 border-black px-3 py-1 text-black font-black pb-2 inline-block shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">Em 7 Dias</span> <br />
+          Com Estrutura Pronta do HUB
         </h1>
         
-        <p className="text-base text-gray-700 font-sans font-semibold leading-relaxed max-w-3xl mx-auto">
-          Você não precisa produzir softwares, negociar suporte de Telemedicina ou lidar com burocracias. Nós fornecemos a infraestrutura, canais digitais e produtos validados. Você conecta clientes locais e fatura com até <strong className="font-extrabold text-black">80% de comissão rápida</strong> com split imediato!
-        </p>
+        <div className="bg-slate-50 border-l-4 border-amber-400 p-4 rounded-xs text-left max-w-3xl mx-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black">
+          <p className="text-base text-gray-800 font-sans font-extrabold leading-relaxed text-center">
+            Comece seu negócio em 7 dias com estrutura pronta, treinamento especializado e suporte. Comece a lucrar na primeira semana.
+          </p>
+        </div>
       </div>
 
       {/* WHY JOIN - CORE VALUE PROPOSITIONS */}
@@ -133,9 +135,9 @@ export default function RecruitmentView({ onRegisterSubmit }: RecruitmentViewPro
                   1
                 </div>
                 <div>
-                  <h4 className="font-sans font-black text-xs text-black uppercase">Júnior - Diagnóstico de Perfil</h4>
+                  <h4 className="font-sans font-black text-xs text-black uppercase">1️⃣ STARTER - Início Rápido (Grátis)</h4>
                   <p className="text-[11px] text-gray-600 font-sans font-semibold mt-0.5 leading-relaxed">
-                    Você realiza o credenciamento comportamental na Academia, conclui os 3 módulos práticos de treinamento inicial e acessa o Portal de comissões imediato.
+                    Comece sem taxas e faça sua prova de conceito rápida por 30 dias. Acesso ao treinamento básico com split de 65% das comissões direto na sua carteira digital.
                   </p>
                 </div>
               </div>
@@ -145,9 +147,9 @@ export default function RecruitmentView({ onRegisterSubmit }: RecruitmentViewPro
                   2
                 </div>
                 <div>
-                  <h4 className="font-sans font-black text-xs text-black uppercase">Premium - Leads de WhatsApp</h4>
-                  <p className="text-[11px] text-gray-600 font-sans font-semibold mt-0.5 leading-relaxed">
-                    Alcançando 8 vendas bem-sucedidas no simulador, o HUB investe o fundo de tráfego diretamente no seu WhatsApp comercial encaminhando leads regionais prontos.
+                  <h4 className="font-sans font-black text-xs text-black uppercase">2️⃣ GROWTH - Alavancagem Comercial (R$ 197/mês)</h4>
+                  <p className="text-[11px] text-gray-650 font-sans font-semibold mt-0.5 leading-relaxed">
+                    Treinamentos de elite avançados, ferramentas completas de CRM para controle de clientes e suporte personalizado 1-on-1 mensal com comissão expandida para 75%.
                   </p>
                 </div>
               </div>
@@ -157,9 +159,9 @@ export default function RecruitmentView({ onRegisterSubmit }: RecruitmentViewPro
                   3
                 </div>
                 <div>
-                  <h4 className="font-sans font-black text-xs text-black uppercase">Master - Liderança & Suporte</h4>
-                  <p className="text-[11px] text-gray-600 font-sans font-semibold mt-0.5 leading-relaxed">
-                    Ao consolidar sua maturidade comercial, você apoia novos afiliados locais na capacitação, lidera canais regionais e recebe prêmios aditivos de coordenação.
+                  <h4 className="font-sans font-black text-xs text-black uppercase">3️⃣ MASTER - Gestão de Elite (R$ 497/mês)</h4>
+                  <p className="text-[11px] text-gray-650 font-sans font-semibold mt-0.5 leading-relaxed">
+                    Tudo de Growth mais suporte ilimitado prioritário, produtos exclusivos de altíssima conversão, certificação oficial inovadora e distribuição automática de leads gerados pelo Hub. Comissão de 80%!
                   </p>
                 </div>
               </div>

@@ -33,12 +33,19 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
   const [activeSegment, setActiveSegment] = useState<'all' | 'entrepreneur' | 'associate' | 'representative'>('all');
 
   // Calculator states
-  const [partnerLevel, setPartnerLevel] = useState<'Junior' | 'Premium' | 'Master'>('Premium');
+  const [partnerLevel, setPartnerLevel] = useState<'STARTER' | 'GROWTH' | 'MASTER'>('GROWTH');
   const [telemedicinaSales, setTelemedicinaSales] = useState<number>(10);
   const [solarReferrals, setSolarReferrals] = useState<number>(3);
   const [maquininhaPlacements, setMaquininhaPlacements] = useState<number>(5);
   const [pumaSales, setPumaSales] = useState<number>(4);
   const [ciconSales, setCiconSales] = useState<number>(6);
+
+  // Network Simulator states
+  const [simulatorTab, setSimulatorTab] = useState<'individual' | 'network'>('individual');
+  const [networkStarter, setNetworkStarter] = useState<number>(30);
+  const [networkGrowth, setNetworkGrowth] = useState<number>(50);
+  const [networkMaster, setNetworkMaster] = useState<number>(20);
+  const [averageSalesPerPartner, setAverageSalesPerPartner] = useState<number>(3);
 
   // Financial constants
   const prices = {
@@ -49,11 +56,11 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
     cicon: 297.00
   };
 
-  // Split rates based on level
+  // Split rates based on level (STARTER, GROWTH, MASTER comission rates for the sales person/entrepreneur)
   const splitRates = {
-    Junior: 0.70,
-    Premium: 0.80,
-    Master: 0.90
+    STARTER: 0.65,
+    GROWTH: 0.75,
+    MASTER: 0.80
   };
 
   // Calculations
@@ -67,6 +74,21 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
   const totalRecurrentMouthlyVal = revTelemedicina + revSolar + revPuma; // telemedicina, solar and puma are recurrent
   const totalImmediateVal = revMaquininha + revCicon;
   const grandTotalEstimated = totalRecurrentMouthlyVal + totalImmediateVal;
+
+  // Network simulation math
+  const subBaseStarter = 0;
+  const subBaseGrowth = networkGrowth * 197;
+  const subBaseMaster = networkMaster * 497;
+  const totalSubBase = subBaseStarter + subBaseGrowth + subBaseMaster;
+
+  // Let's assume average product value of R$ 150 for network sales
+  const avgProductPriceForResidual = 150;
+  const residualStarter = networkStarter * averageSalesPerPartner * avgProductPriceForResidual * 0.35;
+  const residualGrowth = networkGrowth * averageSalesPerPartner * avgProductPriceForResidual * 0.25;
+  const residualMaster = networkMaster * averageSalesPerPartner * avgProductPriceForResidual * 0.20;
+  const totalResidual = residualStarter + residualGrowth + residualMaster;
+
+  const totalNetworkRevenue = totalSubBase + totalResidual;
 
   return (
     <div className="space-y-12 max-w-6xl mx-auto" id="pitch_deck_container">
@@ -87,12 +109,12 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
           </div>
           
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-sans font-black tracking-tight leading-none uppercase">
-            Sua Estrutura Pronta Para <br />
-            <span className="text-amber-400 bg-slate-950 px-2 py-0.5 border border-amber-400">Empreender e Faturar</span>
+            Comece seu negócio em 7 dias <br />
+            <span className="text-amber-400 bg-slate-950 px-2 py-0.5 border border-amber-400">Com Estrutura Pronta</span>
           </h2>
           
-          <p className="text-sm md:text-lg font-sans text-slate-300 max-w-2xl font-semibold leading-relaxed">
-            A FLANX é um ecossistema completo de microfranquias digitais. Juntamos produtos de utilidade de alta conversão, tecnologia de pagamento instantâneo e captação de clientes integrada para você governar o seu próprio negócio.
+          <p className="text-base md:text-xl font-sans text-slate-100 max-w-3xl font-extrabold leading-relaxed border-l-4 border-amber-400 pl-4 bg-slate-950/40 p-3 rounded-sm">
+            Comece seu negócio em 7 dias com estrutura pronta, treinamento especializado e suporte. Comece a lucrar na primeira semana.
           </p>
 
           <div className="flex flex-wrap gap-3 pt-4">
@@ -431,243 +453,508 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
       {/* ESTIMATOR / INTERACTIVE SIMULATION SANDBOX */}
       <section className="bg-white border-4 border-black p-6 md:p-10 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] space-y-8 relative" id="interactive_calculator">
         
-        <div className="space-y-1">
-          <span className="text-xs font-mono font-black text-amber-600 uppercase tracking-widest block">CALCULADORA DE PROSPEÇÃO</span>
-          <h3 className="text-2xl md:text-3xl font-sans font-black uppercase text-black">Simule seus Ganhos Líquidos Mensais</h3>
-          <p className="text-xs text-slate-500 max-w-xl font-medium">
-            Ajuste o plano do parceiro e selecione a estimativa de vendas que você pretende realizar por mês para estimar seu retorno financeiro líquido:
+        <div className="space-y-2 text-center md:text-left">
+          <span className="text-xs font-mono font-black text-amber-600 uppercase tracking-widest block">MODELOS DE REMUNERAÇÃO</span>
+          <h3 className="text-3xl font-sans font-black uppercase text-black">Estrutura de Ganhos em 3 Camadas</h3>
+          <p className="text-xs text-slate-500 max-w-2xl font-medium">
+            Escolha como simular seu retorno financeiro. Você pode fazer simulações de vendas individuais como parceiro ou simular o poder de expandir e capacitar sua própria equipe de consultoria local.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Controls */}
-          <div className="lg:col-span-7 space-y-6 border-b lg:border-b-0 lg:border-r border-black pb-6 lg:pb-0 lg:pr-8">
-            
-            {/* Level selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-extrabold uppercase text-slate-800 block">Nível de Parceria / Comissionamento:</label>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { level: 'Junior', rate: '70%', desc: 'Iniciante' },
-                  { level: 'Premium', rate: '80%', desc: 'Destaque' },
-                  { level: 'Master', rate: '90%', desc: 'Elite Regional' }
-                ].map(item => (
-                  <button
-                    key={item.level}
-                    type="button"
-                    onClick={() => setPartnerLevel(item.level as any)}
-                    className={`p-3 border-2 border-black text-left flex flex-col justify-between transition-all ${
-                      partnerLevel === item.level
-                        ? 'bg-amber-400 text-black font-extrabold'
-                        : 'bg-white hover:bg-slate-50 text-slate-700'
-                    }`}
-                  >
-                    <span className="text-xs font-bold font-sans uppercase">{item.level}</span>
-                    <div className="flex justify-between items-baseline mt-2 w-full">
-                      <span className="text-sm font-mono font-black">{item.rate}</span>
-                      <span className="text-[8px] opacity-80 uppercase">{item.desc}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Slider 1: Telemedicina Sales */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-extrabold text-slate-800 uppercase">1. Telemedicina Conecta (Assinaturas/mês)</span>
-                <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
-                  {telemedicinaSales} un
-                </span>
-              </div>
-              <input 
-                type="range" 
-                min="0" 
-                max="50" 
-                value={telemedicinaSales}
-                onChange={(e) => setTelemedicinaSales(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
-              />
-              <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
-                <span>0 vendas</span>
-                <span>Preço unitário: R$ 79,00/mês</span>
-                <span>50 vendas</span>
-              </div>
-            </div>
-
-            {/* Slider 2: Solar Energy referrals */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-extrabold text-slate-800 uppercase">2. Indicações de Energia Solar (Contratos/mês)</span>
-                <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
-                  {solarReferrals} un
-                </span>
-              </div>
-              <input 
-                type="range" 
-                min="0" 
-                max="20" 
-                value={solarReferrals}
-                onChange={(e) => setSolarReferrals(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
-              />
-              <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
-                <span>0 indicações</span>
-                <span>Remuneração estim.: R$ 150,00</span>
-                <span>20 indicações</span>
-              </div>
-            </div>
-
-            {/* Slider 3: Card Machines */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-extrabold text-slate-800 uppercase">3. Maquininhas Pro Instaladas (Unidades/mês)</span>
-                <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
-                  {maquininhaPlacements} un
-                </span>
-              </div>
-              <input 
-                type="range" 
-                min="0" 
-                max="30" 
-                value={maquininhaPlacements}
-                onChange={(e) => setMaquininhaPlacements(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
-              />
-              <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
-                <span>0 ativações</span>
-                <span>Comissão unitária: R$ 100,00</span>
-                <span>30 ativações</span>
-              </div>
-            </div>
-
-            {/* Slider 4: Puma Proteção Veicular */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-extrabold text-slate-800 uppercase">4. Puma Proteção Veicular (Adesões/mês)</span>
-                <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
-                  {pumaSales} un
-                </span>
-              </div>
-              <input 
-                type="range" 
-                min="0" 
-                max="30" 
-                value={pumaSales}
-                onChange={(e) => setPumaSales(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
-              />
-              <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
-                <span>0 adesões</span>
-                <span>Comissão unitária base: R$ 120,00</span>
-                <span>30 adesões</span>
-              </div>
-            </div>
-
-            {/* Slider 5: CICON100 EAD Courses */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-extrabold text-slate-800 uppercase">5. Vendas CICON100 EAD (Cursos/mês)</span>
-                <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
-                  {ciconSales} un
-                </span>
-              </div>
-              <input 
-                type="range" 
-                min="0" 
-                max="30" 
-                value={ciconSales}
-                onChange={(e) => setCiconSales(Number(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
-              />
-              <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
-                <span>0 matrículas</span>
-                <span>Preço médio: R$ 297,00</span>
-                <span>30 matrículas</span>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Calculations Result Block */}
-          <div className="lg:col-span-5 bg-slate-950 text-white p-6 border-2 border-amber-400 rounded-sm space-y-6">
-            <span className="text-[8px] font-mono tracking-widest text-[#fbbf24] font-black uppercase block">
-              ESTIMATIVA OPERACIONAL LÍQUIDA
-            </span>
-
-            <div className="space-y-3">
-              <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                <span className="text-slate-400">Comissões Telemedicina ({partnerLevel}):</span>
-                <span className="font-mono text-white">
-                  R$ {revTelemedicina.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-              
-              <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                <span className="text-slate-400">Comissões Energia Solar ({partnerLevel}):</span>
-                <span className="font-mono text-white">
-                  R$ {revSolar.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-
-              <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                <span className="text-slate-400">Comissões Maquininhas Pro ({partnerLevel}):</span>
-                <span className="font-mono text-white">
-                  R$ {revMaquininha.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-
-              <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                <span className="text-slate-400">Comissões Puma Proteção ({partnerLevel}):</span>
-                <span className="font-mono text-white">
-                  R$ {revPuma.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-
-              <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                <span className="text-slate-400">Comissões CICON100 EAD ({partnerLevel}):</span>
-                <span className="font-mono text-white">
-                  R$ {revCicon.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-            </div>
-
-            <div className="p-4 bg-slate-900 border border-slate-800 text-center space-y-1">
-              <span className="text-[8.5px] font-mono text-slate-400 uppercase tracking-wider block">faturamento mensal estimado</span>
-              <p className="text-3xl font-mono font-black text-emerald-400 tracking-tight">
-                R$ {grandTotalEstimated.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-              </p>
-              <span className="text-[8.5px] font-bold text-amber-400 uppercase block">
-                Sendo R$ {totalRecurrentMouthlyVal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} mensais de recorrência líquida
-              </span>
-            </div>
-
-            <div className="space-y-2 text-[10px] text-slate-400 leading-relaxed bg-[#0b0f19] p-3 border border-slate-900 rounded-sm">
-              <div className="flex justify-between text-white font-extrabold uppercase border-b border-slate-800 pb-1 mb-1">
-                <span>Resumo da Franquia:</span>
-                <span>Taxas</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Taxa de adesão (Setup da Franquia)</span>
-                <span className="text-emerald-400 font-bold uppercase font-mono">Grátis</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Royalty fixo mensal (Sistema, Link & Split)</span>
-                <span className="text-amber-400 font-bold font-mono">R$ 49,00</span>
-              </div>
-            </div>
-
-            <button
-              onClick={onGoToOnboarding}
-              className="w-full py-3 bg-amber-400 hover:bg-white text-black font-sans font-black text-xs uppercase tracking-widest border border-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] transition-all flex items-center justify-center gap-2"
-            >
-              <span>Garantir Vaga & Começar Já</span>
-              <ChevronRight className="w-4 h-4 stroke-[2.5]" />
-            </button>
-          </div>
-
+        {/* Tab selection */}
+        <div className="flex flex-col sm:flex-row border-2 border-black" id="simulator_tab_nav">
+          <button
+            onClick={() => setSimulatorTab('individual')}
+            className={`flex-1 py-3 text-xs font-sans font-black uppercase transition-all flex items-center justify-center gap-2 ${
+              simulatorTab === 'individual'
+                ? 'bg-amber-400 text-black border-b-2 border-b-black md:border-b-0'
+                : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+            }`}
+          >
+            <Users className="w-4 h-4 text-slate-900" />
+            <span>📊 Simulação Individual (Meus Ganhos)</span>
+          </button>
+          <button
+            onClick={() => setSimulatorTab('network')}
+            className={`flex-1 py-3 text-xs font-sans font-black uppercase border-t-2 border-black sm:border-t-0 sm:border-l-2 transition-all flex items-center justify-center gap-2 ${
+              simulatorTab === 'network'
+                ? 'bg-amber-400 text-black border-b-2 border-b-black md:border-b-0'
+                : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+            }`}
+          >
+            <TrendingUp className="w-4 h-4 text-slate-900" />
+            <span>🕸️ Simular Minha Rede de Empreendedores (Sua Expansão)</span>
+          </button>
         </div>
+
+        {simulatorTab === 'individual' ? (
+          <div className="grid lg:grid-cols-12 gap-8 items-start animate-fade-in">
+            {/* Controls */}
+            <div className="lg:col-span-7 space-y-6 border-b lg:border-b-0 lg:border-r border-black pb-6 lg:pb-0 lg:pr-8">
+              
+              {/* Level selector */}
+              <div className="space-y-2">
+                <label className="text-xs font-extrabold uppercase text-slate-800 block">Escolha seu Plano de Atuação:</label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {[
+                    { level: 'STARTER', rate: '65%', desc: 'Grátis Teste', color: 'border-slate-400' },
+                    { level: 'GROWTH', rate: '75%', desc: 'R$ 197/mês', color: 'border-amber-400' },
+                    { level: 'MASTER', rate: '80%', desc: 'R$ 497/mês', color: 'border-cyan-400' }
+                  ].map(item => (
+                    <button
+                      key={item.level}
+                      type="button"
+                      onClick={() => setPartnerLevel(item.level as any)}
+                      className={`p-3 border-2 border-black text-left flex flex-col justify-between transition-all ${
+                        partnerLevel === item.level
+                          ? 'bg-amber-400 text-black font-extrabold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
+                          : 'bg-white hover:bg-slate-50 text-slate-700'
+                      }`}
+                    >
+                      <div className="flex justify-between items-center w-full">
+                        <span className="text-xs font-black font-sans uppercase">{item.level}</span>
+                        {partnerLevel === item.level && <Check className="w-3.5 h-3.5 stroke-[3] text-black" />}
+                      </div>
+                      <div className="flex justify-between items-baseline mt-4 w-full">
+                        <span className="text-base font-mono font-black">{item.rate} comissão</span>
+                        <span className="text-[9px] font-bold uppercase text-slate-600">{item.desc}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Dynamic level info card */}
+              <div className="border-2 border-black p-4 bg-slate-50 space-y-2">
+                <strong className="text-xs text-slate-900 uppercase block">
+                  Benefícios do plano {partnerLevel}:
+                </strong>
+                {partnerLevel === 'STARTER' && (
+                  <ul className="text-[11px] text-gray-700 space-y-1.5 font-mono list-disc pl-4">
+                    <li>Duração de 30 dias (prova de conceito para ver na prática)</li>
+                    <li>Sem taxa mensal inicial para experimentar rápido</li>
+                    <li>Ganho repassado: <strong className="text-black font-bold">65% das comissões</strong> (e 35% ficam retidos)</li>
+                    <li>Acesso básico aos materiais e treinamentos da FLANX</li>
+                  </ul>
+                )}
+                {partnerLevel === 'GROWTH' && (
+                  <ul className="text-[11px] text-gray-700 space-y-1.5 font-mono list-disc pl-4">
+                    <li>Suporte focado em crescimento acelerado</li>
+                    <li>Treinamento completo e avançado conduzido por especialistas</li>
+                    <li>Acesso a CRM profissional + ferramentas de tráfego e marketing</li>
+                    <li>Suporte 1-on-1 mensal direto para alinhar sua estratégia</li>
+                    <li>Ganho de comissão superior: <strong className="text-black font-bold">75% diretos para você</strong></li>
+                    <li>Bônus: Acesso instantâneo a produtos estendidos e bônus especiais</li>
+                    <li>Vantagem vitalícia: primeiro cliente do mês é grátis na sua contabilidade</li>
+                  </ul>
+                )}
+                {partnerLevel === 'MASTER' && (
+                  <ul className="text-[11px] text-gray-700 space-y-1.5 font-mono list-disc pl-4">
+                    <li>Nossa modalidade de elite para crescimento corporativo</li>
+                    <li>Ganho máximo do mercado: <strong className="text-black font-bold">80% em todas as parcerias</strong></li>
+                    <li>Suporte ilimitado e imediato prioritário</li>
+                    <li>Acesso VIP a novos lançamentos e produtos EXCLUSIVOS</li>
+                    <li>Certificação oficial FLANX que aumenta sua autoridade</li>
+                    <li>Revenue share garantido no Hub ao atingir faturamento de R$ 10k/mês</li>
+                  </ul>
+                )}
+              </div>
+
+              {/* Slider 1: Telemedicina Sales */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-extrabold text-slate-800 uppercase">1. Telemedicina Conecta (Assinaturas/mês)</span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                    {telemedicinaSales} un
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="50" 
+                  value={telemedicinaSales}
+                  onChange={(e) => setTelemedicinaSales(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
+                />
+                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                  <span>0 vendas</span>
+                  <span>Preço unitário: R$ 79,00/mês</span>
+                  <span>50 vendas</span>
+                </div>
+              </div>
+
+              {/* Slider 2: Solar Energy referrals */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-extrabold text-slate-800 uppercase">2. Indicações de Energia Solar (Contratos/mês)</span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                    {solarReferrals} un
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="20" 
+                  value={solarReferrals}
+                  onChange={(e) => setSolarReferrals(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
+                />
+                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                  <span>0 indicações</span>
+                  <span>Bônus pago base: R$ 150,00</span>
+                  <span>20 indicações</span>
+                </div>
+              </div>
+
+              {/* Slider 3: Card Machines */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-extrabold text-slate-800 uppercase">3. Maquininhas Pro Instaladas (Unidades/mês)</span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                    {maquininhaPlacements} un
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="30" 
+                  value={maquininhaPlacements}
+                  onChange={(e) => setMaquininhaPlacements(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
+                />
+                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                  <span>0 ativações</span>
+                  <span>Comissão direta base: R$ 100,00</span>
+                  <span>30 ativações</span>
+                </div>
+              </div>
+
+              {/* Slider 4: Puma Proteção Veicular */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-extrabold text-slate-800 uppercase">4. Puma Proteção Veicular (Adesões/mês)</span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                    {pumaSales} un
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="30" 
+                  value={pumaSales}
+                  onChange={(e) => setPumaSales(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
+                />
+                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                  <span>0 adesões</span>
+                  <span>Comissão direta base: R$ 120,00</span>
+                  <span>30 adesões</span>
+                </div>
+              </div>
+
+              {/* Slider 5: CICON100 EAD Courses */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-extrabold text-slate-800 uppercase">5. Vendas CICON100 EAD (Inscrições/mês)</span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                    {ciconSales} un
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="30" 
+                  value={ciconSales}
+                  onChange={(e) => setCiconSales(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
+                />
+                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                  <span>0 matrículas</span>
+                  <span>Preço médio: R$ 297,00</span>
+                  <span>30 matrículas</span>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Calculations Result Block */}
+            <div className="lg:col-span-5 bg-slate-950 text-white p-6 border-2 border-amber-400 rounded-sm space-y-6">
+              <span className="text-[8px] font-mono tracking-widest text-[#fbbf24] font-black uppercase block">
+                ESTIMATIVA OPERACIONAL INDIVIDUAL
+              </span>
+
+              <div className="space-y-3">
+                <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                  <span className="text-slate-400">Telemedicina ({partnerLevel}):</span>
+                  <span className="font-mono text-white">
+                    R$ {revTelemedicina.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+                
+                <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                  <span className="text-slate-400">Energia Solar ({partnerLevel}):</span>
+                  <span className="font-mono text-white">
+                    R$ {revSolar.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                  <span className="text-slate-400">Maquininhas Pro ({partnerLevel}):</span>
+                  <span className="font-mono text-white">
+                    R$ {revMaquininha.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                  <span className="text-slate-400">Puma Proteção ({partnerLevel}):</span>
+                  <span className="font-mono text-white">
+                    R$ {revPuma.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                  <span className="text-slate-400">Cursos CICON100 ({partnerLevel}):</span>
+                  <span className="font-mono text-white">
+                    R$ {revCicon.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-4 bg-slate-900 border border-slate-800 text-center space-y-1">
+                <span className="text-[8.5px] font-mono text-slate-400 uppercase tracking-wider block">faturamento mensal estimado</span>
+                <p className="text-3xl font-mono font-black text-emerald-400 tracking-tight">
+                  R$ {grandTotalEstimated.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </p>
+                <span className="text-[8.5px] font-bold text-amber-400 uppercase block">
+                  Sendo R$ {totalRecurrentMouthlyVal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} /mês de recorrência líquida
+                </span>
+              </div>
+
+              <div className="space-y-2 text-[10px] text-slate-400 leading-relaxed bg-[#0b0f19] p-3 border border-slate-900 rounded-sm">
+                <div className="flex justify-between text-white font-extrabold uppercase border-b border-slate-800 pb-1 mb-1">
+                  <span>Plano Selecionado:</span>
+                  <span>Valores</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Mensalidade da Licença</span>
+                  <span className="text-amber-400 font-bold font-mono">
+                    {partnerLevel === 'STARTER' ? 'Grátis' : partnerLevel === 'GROWTH' ? 'R$ 197/mês' : 'R$ 497/mês'}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Período de Setup Inicial</span>
+                  <span className="text-emerald-400 font-bold uppercase font-mono">Grátis</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Divisão das Comissões</span>
+                  <span className="text-white font-mono">Você {(splitRates[partnerLevel] * 100)}% | Hub {(100 - splitRates[partnerLevel] * 100)}%</span>
+                </div>
+              </div>
+
+              <button
+                onClick={onGoToOnboarding}
+                className="w-full py-3 bg-amber-400 hover:bg-white text-black font-sans font-black text-xs uppercase tracking-widest border border-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] transition-all flex items-center justify-center gap-2"
+              >
+                <span>Garantir Vaga no Plano {partnerLevel}</span>
+                <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="grid lg:grid-cols-12 gap-8 items-start animate-fade-in">
+            {/* Network Builder Controls */}
+            <div className="lg:col-span-7 space-y-6 border-b lg:border-b-0 lg:border-r border-black pb-6 lg:pb-0 lg:pr-8">
+              
+              <div className="border border-black p-4 bg-amber-50/50 space-y-2 rounded-xs">
+                <strong className="text-xs uppercase text-slate-950 block">🚀 Vantagens do Plano de Rede Multi-Camadas:</strong>
+                <ul className="text-[11.5px] text-zinc-700 space-y-1.5 list-disc pl-4 font-sans font-medium">
+                  <li><strong>Início Grátis (Baixa Barreira):</strong> Seus consultores começam sem risco no plano Starter, gerando cadastros e vendo ROI imediato nos primeiros 30 dias.</li>
+                  <li><strong>Upgrade Natural:</strong> Conforme realizam vendas e desejam resgatar 75% ou 80% do valor de comissão, efetuam o upgrade para Growth ou Master.</li>
+                  <li><strong>Receita Recorrente Previsível:</strong> Você recebe 100% do valor de todas as mensalidades (R$ 197/mês de Growth e R$ 497/mês de Master) dos consultores da sua rede.</li>
+                  <li><strong>Ganhos Multiplicados:</strong> Você recebe um bônus de 20% a 35% sobre as vendas geradas por todos os consultores da rede com split automatizado!</li>
+                </ul>
+              </div>
+
+              {/* Slider Starter Network */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-extrabold text-slate-800 uppercase">Consultores no Plano STARTER (Ativos)</span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                    {networkStarter} parceiros
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="100" 
+                  value={networkStarter}
+                  onChange={(e) => setNetworkStarter(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
+                />
+                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                  <span>0 parceiros</span>
+                  <span>Você ganha 35% de comissão residual sobre suas vendas</span>
+                  <span>100 parceiros</span>
+                </div>
+              </div>
+
+              {/* Slider Growth Network */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-extrabold text-slate-800 uppercase">Consultores no Plano GROWTH (R$ 197/mês)</span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                    {networkGrowth} parceiros
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="100" 
+                  value={networkGrowth}
+                  onChange={(e) => setNetworkGrowth(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
+                />
+                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                  <span>0 parceiros</span>
+                  <span>Mensalidade: R$ 197,00 | Você retém 25% comissão s/ vendas</span>
+                  <span>100 parceiros</span>
+                </div>
+              </div>
+
+              {/* Slider Master Network */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-extrabold text-slate-800 uppercase">Consultores no Plano MASTER (R$ 497/mês)</span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                    {networkMaster} parceiros
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="100" 
+                  value={networkMaster}
+                  onChange={(e) => setNetworkMaster(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
+                />
+                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                  <span>0 parceiros</span>
+                  <span>Mensalidade: R$ 497,00 | Você retém 20% comissão s/ vendas</span>
+                  <span>100 parceiros</span>
+                </div>
+              </div>
+
+              {/* Slider Average Sales per partner */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-extrabold text-slate-800 uppercase">Média de Vendas Mensais por Consultor</span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                    {averageSalesPerPartner} vendas/parceiro
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="20" 
+                  value={averageSalesPerPartner}
+                  onChange={(e) => setAverageSalesPerPartner(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
+                />
+                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                  <span>Sem vendas</span>
+                  <span>Estimado em taxa de comissão média de R$ 150/pedido</span>
+                  <span>20 vendas/mês</span>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Calculations Result Block for Network */}
+            <div className="lg:col-span-5 bg-slate-950 text-white p-6 border-2 border-amber-400 rounded-sm space-y-6">
+              <span className="text-[8px] font-mono tracking-widest text-[#fbbf24] font-black uppercase block">
+                EXTRATO DO DIRETOR DE EXPANSÃO
+              </span>
+
+              <div className="space-y-3">
+                <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                  <span className="text-slate-400">Assinaturas Growth ({networkGrowth} un):</span>
+                  <span className="font-mono text-white">
+                    R$ {subBaseGrowth.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+                
+                <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                  <span className="text-slate-400">Assinaturas Master ({networkMaster} un):</span>
+                  <span className="font-mono text-white">
+                    R$ {subBaseMaster.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center text-xs border-b border-amber-500 pb-2 text-amber-400 font-bold">
+                  <span>Receita Recorrente Base (Menbr.):</span>
+                  <span className="font-mono">
+                    R$ {totalSubBase.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês
+                  </span>
+                </div>
+
+                <div className="pt-2 text-[9px] text-slate-400 uppercase tracking-widest block font-bold">
+                  Residual sobre Vendas da Rede:
+                </div>
+
+                <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                  <span className="text-slate-400">Residual Starter ({networkStarter} un • 35%):</span>
+                  <span className="font-mono text-white">
+                    R$ {residualStarter.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                  <span className="text-slate-400">Residual Growth ({networkGrowth} un • 25%):</span>
+                  <span className="font-mono text-white">
+                    R$ {residualGrowth.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                  <span className="text-slate-400">Residual Master ({networkMaster} un • 20%):</span>
+                  <span className="font-mono text-white">
+                    R$ {residualMaster.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2 font-bold text-slate-100">
+                  <span>Total Residual de Vendas:</span>
+                  <span className="font-mono">
+                    R$ {totalResidual.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-4 bg-slate-900 border border-slate-800 text-center space-y-1">
+                <span className="text-[8.5px] font-mono text-slate-400 uppercase tracking-wider block">faturamento mensal de rede estimado</span>
+                <p className="text-3xl font-mono font-black text-emerald-400 tracking-tight">
+                  R$ {totalNetworkRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </p>
+                <span className="text-[8.5px] font-bold text-amber-400 uppercase block">
+                  Incluindo R$ {totalSubBase.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} garantidos apenas em assinaturas base!
+                </span>
+              </div>
+
+              <div className="space-y-1 text-[9px] text-slate-400 leading-relaxed bg-[#0b0f19] p-3 border border-slate-900 rounded-sm">
+                <p className="text-amber-400 font-bold uppercase mb-1">Cenário de Sucesso Demonstrado:</p>
+                <p>Se você tiver <strong className="text-white">100 empreendedores ativos</strong> (30 no Starter, 50 no Growth e 20 no Master), você acumula de cara <strong className="text-emerald-400">R$ 19.790,00 fixos/mês</strong> só em assinaturas do sistema! Com uma média tímida de {averageSalesPerPartner} vendas por mês de cada um, seu ganho salta para <strong className="text-white">R$ {totalNetworkRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês</strong>.</p>
+              </div>
+
+              <button
+                onClick={onGoToOnboarding}
+                className="w-full py-4 bg-emerald-400 hover:bg-white text-black font-sans font-black text-xs uppercase tracking-widest border border-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] transition-all flex items-center justify-center gap-2"
+              >
+                <span>Inscrever-se para Criar Minha Rede</span>
+                <ChevronRight className="w-4 h-4 stroke-[3]" />
+              </button>
+            </div>
+          </div>
+        )}
 
       </section>
 
