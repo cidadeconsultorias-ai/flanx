@@ -74,6 +74,30 @@ export const HUB_PRODUCTS: Product[] = [
     targetAudience: 'Qualquer pessoa ou comércio com conta de luz acima de R$ 150/mês que quer pagar menos.',
     detailsUrl: '/care/energia-limpa'
   },
+  {
+    id: 'puma-protecao-veicular',
+    name: 'Puma Proteção Veicular',
+    vertical: 'Care',
+    price: 120, // average monthly protection fee / recurrent referral commission
+    commissionRate: 0.75, // 75% to salesperson (R$ 90,00)
+    hubSplitRate: 0.25,
+    description: 'Proteção veicular integral e assistência 24 horas para carros, motos e utilitários, com ampla cobertura nacional contra furto, roubo, colisão e terceiros.',
+    recurrent: true,
+    marketingHook: 'Proteja seu patrimônio sem análise de perfil de condutor e sem consulta SPC/Serasa. Mensalidade que cabe no bolso na Puma!',
+    features: [
+      'Sem consulta ao SPC/Serasa ou restrição de perfil',
+      'Assistência 24h completa (reboque, pane elétrica, chaveiro, taxi)',
+      'Cobertura integral contra roubo, furto, incêndio e colisão',
+      'Atendimento em todo o território nacional'
+    ],
+    suggestedSteps: [
+      'Aborde taxistas, motoristas de aplicativo ou proprietários com carros/motos sem proteção.',
+      'Apresente o preço acessível comparado aos seguros tradicionais.',
+      'Gere cotações rápidas usando seus links de consultor diretamente pelo WhatsApp.'
+    ],
+    targetAudience: 'Proprietários de carros, motos e frotas que querem segurança robusta sem os preços elevados de seguros padrão.',
+    detailsUrl: '/care/puma-protecao'
+  },
 
   // VERTICAL EDUCATION
   {
@@ -99,6 +123,30 @@ export const HUB_PRODUCTS: Product[] = [
     ],
     targetAudience: 'Jovens aspirantes, estudantes universitários e trabalhadores informais buscando colocação.',
     detailsUrl: '/education/cursos-livres'
+  },
+  {
+    id: 'cicon100-ead',
+    name: 'CICON100 Cursos EAD',
+    vertical: 'Education',
+    price: 297, // pricing for comprehensive EAD access / specific certifications
+    commissionRate: 0.80, // R$ 237,60 to salesperson
+    hubSplitRate: 0.20,
+    description: 'Plataforma completa de cursos Livres, Preparatórios de Concurso e Especializações do CICON100. Mais de 300 cursos online com certificados válidos.',
+    recurrent: false,
+    marketingHook: 'Qualificação profissional imediata e horas complementares acadêmicas. Estude na CICON100 por preços de alta acessibilidade!',
+    features: [
+      'Acesso a mais de 300 cursos de capacitação e aperfeiçoamento',
+      'Certificados válidos nacionalmente emitidos com agilidade',
+      'Aulas práticas dinâmicas EAD gravadas disponíveis no celular',
+      'Suporte estudantil e de tutoria pelo portal'
+    ],
+    suggestedSteps: [
+      'Foque em concurseiros e profissionais que precisam comprovar títulos ou horas complementares acadêmicas.',
+      'Divulgue os links oficiais www.cicon100.com.br integrados à sua ID nas mídias sociais.',
+      'Apresente como a qualificação rápida e de baixo custo pode acelerar contratações imediatas.'
+    ],
+    targetAudience: 'Estudantes, universitários com necessidade de horas, concorrentes de concursos públicos e trabalhadores buscando promoção rápida.',
+    detailsUrl: 'https://www.cicon100.com.br'
   },
   {
     id: 'formacao-tecnica',

@@ -18,7 +18,9 @@ import {
   Check,
   Percent,
   Clock,
-  HeartHandshake
+  HeartHandshake,
+  Car,
+  BookOpen
 } from 'lucide-react';
 
 interface PresentationViewProps {
@@ -35,12 +37,16 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
   const [telemedicinaSales, setTelemedicinaSales] = useState<number>(10);
   const [solarReferrals, setSolarReferrals] = useState<number>(3);
   const [maquininhaPlacements, setMaquininhaPlacements] = useState<number>(5);
+  const [pumaSales, setPumaSales] = useState<number>(4);
+  const [ciconSales, setCiconSales] = useState<number>(6);
 
   // Financial constants
   const prices = {
     telemedicina: 79.00,
     solarReferral: 150.00,
-    maquininha: 100.00
+    maquininha: 100.00,
+    puma: 120.00,
+    cicon: 297.00
   };
 
   // Split rates based on level
@@ -55,9 +61,11 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
   const revTelemedicina = telemedicinaSales * prices.telemedicina * calculatedSplit;
   const revSolar = solarReferrals * prices.solarReferral * calculatedSplit;
   const revMaquininha = maquininhaPlacements * prices.maquininha * calculatedSplit;
+  const revPuma = pumaSales * prices.puma * calculatedSplit;
+  const revCicon = ciconSales * prices.cicon * calculatedSplit;
   
-  const totalRecurrentMouthlyVal = revTelemedicina + revSolar; // telemedicina and solar are recurrent
-  const totalImmediateVal = revMaquininha;
+  const totalRecurrentMouthlyVal = revTelemedicina + revSolar + revPuma; // telemedicina, solar and puma are recurrent
+  const totalImmediateVal = revMaquininha + revCicon;
   const grandTotalEstimated = totalRecurrentMouthlyVal + totalImmediateVal;
 
   return (
@@ -382,18 +390,32 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
               As soluções B2B da FLANX possuem argumentos imbatíveis de economia que convertem em poucas palavras.
             </p>
 
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="border border-black p-4 space-y-2">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="border border-black p-4 space-y-2 bg-gradient-to-b from-white to-amber-50/20">
                 <strong className="text-xs uppercase text-slate-800 block">⚡ Energia Solar Compartilhada</strong>
                 <p className="text-[11px] text-gray-600">
                   Ofereça economia imediata na conta de energia de padarias, mercearias, academias e escritórios sem investimentos em placas. Você recebe R$ 105 por indicação aprovada na fatura.
                 </p>
               </div>
 
-              <div className="border border-black p-4 space-y-2">
+              <div className="border border-black p-4 space-y-2 bg-gradient-to-b from-white to-amber-50/20">
                 <strong className="text-xs uppercase text-slate-800 block">💳 Portfólio de Maquininhas Pro</strong>
                 <p className="text-[11px] text-gray-600">
                   Visite estabelecimentos e troque as máquinas de cartão antigas pelas taxas super competitivas do FLANX Hub. Ganhe R$ 80 por máquina instalada, com suporte local de 24h garantido pelo Hub.
+                </p>
+              </div>
+
+              <div className="border border-black p-4 space-y-2 bg-gradient-to-b from-white to-amber-50/20">
+                <strong className="text-xs uppercase text-slate-800 block">🚗 Puma Proteção Veicular</strong>
+                <p className="text-[11px] text-gray-600">
+                  Apresente proteção veicular integral e assistência 24h sem análise de perfil ou restrição SPC/Serasa para carros, motos e utilitários. Ganhe ótimas comissões por cada indicação.
+                </p>
+              </div>
+
+              <div className="border border-black p-4 space-y-2 bg-gradient-to-b from-white to-amber-50/20">
+                <strong className="text-xs uppercase text-slate-800 block">🎓 Cursos EAD CICON100</strong>
+                <p className="text-[11px] text-gray-600">
+                  Ofereça dezenas de opções de cursos de capacitação rápida e especializações pelo portal CICON100, agregando certificação nacional. Até R$ 237,60 de comissão direta.
                 </p>
               </div>
             </div>
@@ -520,6 +542,52 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
               </div>
             </div>
 
+            {/* Slider 4: Puma Proteção Veicular */}
+            <div className="space-y-2">
+              <div className="flex justify-between items-center text-xs">
+                <span className="font-extrabold text-slate-800 uppercase">4. Puma Proteção Veicular (Adesões/mês)</span>
+                <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                  {pumaSales} un
+                </span>
+              </div>
+              <input 
+                type="range" 
+                min="0" 
+                max="30" 
+                value={pumaSales}
+                onChange={(e) => setPumaSales(Number(e.target.value))}
+                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
+              />
+              <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                <span>0 adesões</span>
+                <span>Comissão unitária base: R$ 120,00</span>
+                <span>30 adesões</span>
+              </div>
+            </div>
+
+            {/* Slider 5: CICON100 EAD Courses */}
+            <div className="space-y-2">
+              <div className="flex justify-between items-center text-xs">
+                <span className="font-extrabold text-slate-800 uppercase">5. Vendas CICON100 EAD (Cursos/mês)</span>
+                <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                  {ciconSales} un
+                </span>
+              </div>
+              <input 
+                type="range" 
+                min="0" 
+                max="30" 
+                value={ciconSales}
+                onChange={(e) => setCiconSales(Number(e.target.value))}
+                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
+              />
+              <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                <span>0 matrículas</span>
+                <span>Preço médio: R$ 297,00</span>
+                <span>30 matrículas</span>
+              </div>
+            </div>
+
           </div>
 
           {/* Calculations Result Block */}
@@ -547,6 +615,20 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
                 <span className="text-slate-400">Comissões Maquininhas Pro ({partnerLevel}):</span>
                 <span className="font-mono text-white">
                   R$ {revMaquininha.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                <span className="text-slate-400">Comissões Puma Proteção ({partnerLevel}):</span>
+                <span className="font-mono text-white">
+                  R$ {revPuma.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                <span className="text-slate-400">Comissões CICON100 EAD ({partnerLevel}):</span>
+                <span className="font-mono text-white">
+                  R$ {revCicon.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </span>
               </div>
             </div>
