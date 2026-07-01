@@ -333,51 +333,48 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#1e293b] font-sans flex flex-col justify-between selection:bg-amber-100" id="main_viewport">
+    <div className="min-h-screen bg-[#F8FAFC] text-[#1e293b] font-sans flex flex-col justify-between selection:bg-coral/20" id="main_viewport">
       
       {/* GLOBAL CO-BRANDED MAIN HEADER */}
-      <header className="bg-slate-900 text-white p-5 border-b-4 border-black font-sans" id="main_header_element">
+      <header className="bg-navy text-white p-5 border-b border-navy/20 shadow-md font-sans" id="main_header_element">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
           <div className="space-y-1">
             <div className="flex items-center gap-3">
               <img 
                 src="/src/components/Gemini_Generated_Image_co8l7hco8l7hco8l.png" 
                 alt="FLANX" 
-                className="h-10 w-10 object-contain border-2 border-amber-400 bg-slate-950 p-1 rounded-sm"
+                className="h-10 w-10 object-contain border border-coral/40 bg-slate-950 p-1 rounded-xl shadow-sm"
                 referrerPolicy="no-referrer"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
                 }}
               />
               <div>
-                <span className="text-[9px] font-mono uppercase tracking-widest text-amber-400 font-extrabold block">
-                  CÓRTEX OPERACIONAL RADIAL
-                </span>
                 <h1 className="text-3xl md:text-4xl font-sans font-black tracking-tight leading-none uppercase">
-                  FLANX <span className="text-amber-400">Hub</span>
+                  FLANX <span className="text-coral">Hub</span>
                 </h1>
               </div>
             </div>
-            <p className="text-xs font-sans text-slate-300 font-bold mt-1 max-w-xl leading-normal">
+            <p className="text-xs font-sans text-slate-300 font-medium mt-1 whitespace-nowrap" id="header_description_p">
               A estrutura e franquia de produtos digitais mais completa do Brasil pronta para você empreender de casa.
             </p>
           </div>
 
           {/* SATELLITE ACTION: ACTIVE franchisee status widget representation */}
           {appRole === 'franchisee' && activeFranchisee && (
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 bg-slate-950 border-2 border-amber-400 p-3 rounded-md w-full lg:w-auto" id="profile_session_widget">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 bg-slate-950/40 border border-slate-700/50 backdrop-blur-md p-3 rounded-2xl w-full lg:w-auto shadow-inner" id="profile_session_widget">
               
               <div className="text-left py-0.5 sm:pr-4 sm:border-r border-slate-800">
-                <span className="text-[8px] font-mono text-amber-400 uppercase font-black block">Franqueado Conectado:</span>
-                <span className="text-sm font-black text-white uppercase block mt-0.5 tracking-tight font-sans">
+                <span className="text-[8px] font-mono text-coral uppercase font-black block">Franqueado Conectado:</span>
+                <span className="text-sm font-bold text-white uppercase block mt-0.5 tracking-tight font-sans">
                   {activeFranchisee.name}
                 </span>
                 <div className="flex items-center gap-1.5 mt-1">
-                  <span className="text-[8px] font-mono bg-amber-400 text-black px-1 py-0.2 uppercase border border-black font-black">
+                  <span className="text-[8px] font-mono bg-coral text-white px-2 py-0.5 uppercase rounded-full font-bold">
                     {activeFranchisee.level}
                   </span>
                   {activeFranchisee.status !== 'active' && (
-                    <span className="text-[8px] font-mono bg-rose-500 text-white px-1 py-0.2 uppercase border border-black font-black">
+                    <span className="text-[8px] font-mono bg-rose-500 text-white px-2 py-0.5 uppercase rounded-full font-bold">
                       SUSPENSO ADM
                     </span>
                   )}
@@ -396,14 +393,14 @@ export default function App() {
                 <button
                   onClick={handleWithdrawalRequest}
                   disabled={activeFranchisee.balance <= 0 || withdrawalState !== 'idle' || activeFranchisee.status !== 'active'}
-                  className={`py-1.5 px-3 rounded-none text-[10px] font-mono tracking-wider font-extrabold uppercase transition-all border border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+                  className={`py-2 px-4 rounded-full text-[10px] font-sans tracking-wider font-bold uppercase transition-all shadow-sm ${
                     withdrawalState === 'processing'
-                      ? 'bg-amber-400 text-slate-950 cursor-wait'
+                      ? 'bg-coral text-white cursor-wait animate-pulse'
                       : withdrawalState === 'success'
-                        ? 'bg-emerald-500 text-white border-black'
+                        ? 'bg-emerald-500 text-white'
                         : activeFranchisee.balance > 0 && activeFranchisee.status === 'active'
-                          ? 'bg-amber-500 text-black hover:bg-white'
-                          : 'bg-zinc-800 text-zinc-500 border-zinc-700 cursor-not-allowed opacity-30 shadow-none'
+                          ? 'bg-coral text-white hover:bg-white hover:text-coral hover:shadow-md'
+                          : 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-30 shadow-none'
                   }`}
                 >
                   {withdrawalState === 'processing' && 'Fazendo Pix...'}
@@ -416,11 +413,11 @@ export default function App() {
 
           {/* Adm mode badge view */}
           {appRole === 'franchisor' && (
-            <div className="border border-dashed border-amber-400 bg-slate-950/70 p-3 flex items-center gap-2 max-w-xs font-mono">
-              <span className="w-2.5 h-2.5 bg-amber-400 animate-pulse border border-black rounded-full block"></span>
+            <div className="border border-dashed border-coral bg-slate-950/40 p-3 rounded-2xl flex items-center gap-2 max-w-xs font-mono">
+              <span className="w-2.5 h-2.5 bg-coral animate-pulse rounded-full block"></span>
               <div className="text-[10px]">
-                <strong className="text-amber-400 font-black">MODO GESTOR ATIVO</strong>
-                <p className="text-slate-400 text-[8px] uppercase mt-0.5">Visão do Proprietário da Franquia</p>
+                <strong className="text-coral font-bold">MODO GESTOR ATIVO</strong>
+                <p className="text-slate-300 text-[8px] uppercase mt-0.5">Visão do Proprietário da Franquia</p>
               </div>
             </div>
           )}
@@ -428,61 +425,61 @@ export default function App() {
       </header>
 
       {/* CORE GLOBAL TOP-LEVEL ROLE NAVIGATION BAR */}
-      <nav className="bg-slate-100 border-b-4 border-black p-3.5" id="global_nav_menu">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 font-sans">
+      <nav className="bg-white border-b border-slate-100 p-4 shadow-xs" id="global_nav_menu">
+        <div className="max-w-7xl mx-auto flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-4 font-sans">
           
           {/* Main Role / Panel Toggles */}
-          <div className="flex flex-wrap gap-2.5" id="macro_roles_toggles">
+          <div className="flex flex-row flex-nowrap gap-2.5 overflow-x-auto max-w-full pb-1 scrollbar-none md:pb-0" id="macro_roles_toggles">
             
             {/* Franqueador Control Pane Selector */}
             <button
               onClick={() => setAppRole('franchisor')}
-              className={`py-2 px-3.5 font-sans font-black text-xs uppercase transition-all border-2 border-black flex items-center gap-2 ${
+              className={`py-2 px-4 font-sans font-bold text-xs uppercase transition-all rounded-full flex items-center gap-2 shrink-0 ${
                 appRole === 'franchisor'
-                  ? 'bg-amber-400 text-black shadow-none translate-x-[1px] translate-y-[1px]'
-                  : 'bg-white text-black hover:bg-slate-50 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
+                  ? 'bg-coral text-white shadow-md scale-[1.02]'
+                  : 'bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-900 border border-slate-200/60 shadow-xs'
               }`}
             >
-              <Building2 className="w-4 h-4 text-black stroke-[2.5]" />
-              <span>🎛️ Área do Franqueador (Administrativo / Back end)</span>
+              <Building2 className={`w-4 h-4 stroke-[2.5] ${appRole === 'franchisor' ? 'text-white' : 'text-slate-500'}`} />
+              <span>🎛️ Área do Franqueador</span>
             </button>
 
             {/* franchisee Office Selector */}
             <button
               onClick={() => setAppRole('franchisee')}
-              className={`py-2 px-3.5 font-sans font-black text-xs uppercase transition-all border-2 border-black flex items-center gap-2 ${
+              className={`py-2 px-4 font-sans font-bold text-xs uppercase transition-all rounded-full flex items-center gap-2 shrink-0 ${
                 appRole === 'franchisee'
-                  ? 'bg-amber-400 text-black shadow-none translate-x-[1px] translate-y-[1px]'
-                  : 'bg-white text-black hover:bg-slate-50 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
+                  ? 'bg-coral text-white shadow-md scale-[1.02]'
+                  : 'bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-900 border border-slate-200/60 shadow-xs'
               }`}
             >
-              <Smartphone className="w-4 h-4 text-black stroke-[2.5]" />
-              <span>👥 Área do Franqueado (Vendas / Front end)</span>
+              <Smartphone className={`w-4 h-4 stroke-[2.5] ${appRole === 'franchisee' ? 'text-white' : 'text-slate-500'}`} />
+              <span>👥 Área do Franqueado</span>
             </button>
 
             {/* Public landing Page Recruter Toggle */}
             <button
               onClick={() => setAppRole('public_onboarding')}
-              className={`py-2 px-3.5 font-sans font-black text-xs uppercase transition-all border-2 border-black flex items-center gap-2 ${
+              className={`py-2 px-4 font-sans font-bold text-xs uppercase transition-all rounded-full flex items-center gap-2 shrink-0 ${
                 appRole === 'public_onboarding'
-                  ? 'bg-amber-400 text-black shadow-none translate-x-[1px] translate-y-[1px]'
-                  : 'bg-white text-black hover:bg-slate-50 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
+                  ? 'bg-coral text-white shadow-md scale-[1.02]'
+                  : 'bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-900 border border-slate-200/60 shadow-xs'
               }`}
             >
-              <UserPlus className="w-4 h-4 text-black stroke-[2.5]" />
+              <UserPlus className={`w-4 h-4 stroke-[2.5] ${appRole === 'public_onboarding' ? 'text-white' : 'text-slate-500'}`} />
               <span>✨ Página Pública de Recrutamento</span>
             </button>
 
             {/* Business Presentation Pitch Deck */}
             <button
               onClick={() => setAppRole('business_presentation')}
-              className={`py-2 px-3.5 font-sans font-black text-xs uppercase transition-all border-2 border-black flex items-center gap-2 ${
+              className={`py-2 px-4 font-sans font-bold text-xs uppercase transition-all rounded-full flex items-center gap-2 shrink-0 ${
                 appRole === 'business_presentation'
-                  ? 'bg-amber-400 text-black shadow-none translate-x-[1px] translate-y-[1px]'
-                  : 'bg-white text-black hover:bg-slate-50 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
+                  ? 'bg-coral text-white shadow-md scale-[1.02]'
+                  : 'bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-900 border border-slate-200/60 shadow-xs'
               }`}
             >
-              <Award className="w-4 h-4 text-black stroke-[2.5]" />
+              <Award className={`w-4 h-4 stroke-[2.5] ${appRole === 'business_presentation' ? 'text-white' : 'text-slate-500'}`} />
               <span>📊 Apresentação de Negócios / Pitch</span>
             </button>
           </div>
@@ -491,10 +488,10 @@ export default function App() {
           <div className="flex items-center gap-2 justify-end shrink-0">
             <button
               onClick={handleResetEntireSimulation}
-              className="text-[10px] font-mono font-black uppercase text-black border-2 border-black px-3 py-1.5 bg-yellow-400 hover:bg-black hover:text-yellow-400 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-1.5"
+              className="text-[10px] font-mono font-bold uppercase text-slate-600 border border-slate-200 px-3 py-1.5 bg-slate-50 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-100 rounded-full shadow-xs transition-all flex items-center gap-1.5"
               title="Voltar dados simulados ao padrão"
             >
-              <RefreshCw className="w-3.5 h-3.5 text-black stroke-[2.5]" />
+              <RefreshCw className="w-3.5 h-3.5 text-slate-500 stroke-[2.5]" />
               Resetar Tudo
             </button>
           </div>
@@ -503,9 +500,9 @@ export default function App() {
 
       {/* CORE SUB NAVIGATION BAR (Only for the Active Franchisee View) */}
       {appRole === 'franchisee' && (
-        <div className="bg-slate-200 border-b-4 border-black px-4 py-2 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-3">
+        <div className="bg-slate-50 border-b border-slate-200/60 px-4 py-3 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-3 shadow-xs">
           <div className="flex flex-wrap gap-2 max-w-7xl mx-auto w-full">
-            <span className="text-[10px] font-mono font-black text-slate-500 uppercase flex items-center mr-2">
+            <span className="text-[10px] font-mono font-bold text-slate-400 uppercase flex items-center mr-2">
               Menu do Franqueado:
             </span>
             
@@ -520,13 +517,13 @@ export default function App() {
                 <button
                   key={tab.id}
                   onClick={() => setFranchiseeSubTab(tab.id)}
-                  className={`py-1.5 px-3 font-sans font-black text-[11px] uppercase tracking-wide border border-black flex items-center gap-1.5 transition-all ${
+                  className={`py-1.5 px-4 font-sans font-bold text-[11px] uppercase tracking-wide rounded-full flex items-center gap-1.5 transition-all ${
                     isActive 
-                      ? 'bg-slate-900 text-[#fbbf24] shadow-none'
-                      : 'bg-white text-black hover:bg-slate-50 shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)]'
+                      ? 'bg-navy text-coral shadow-sm'
+                      : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 shadow-xs'
                   }`}
                 >
-                  <IconComp className="w-3.5 h-3.5 stroke-[2.5]" />
+                  <IconComp className={`w-3.5 h-3.5 stroke-[2.5] ${isActive ? 'text-coral' : 'text-slate-400'}`} />
                   <span>{tab.label}</span>
                 </button>
               )
@@ -534,13 +531,13 @@ export default function App() {
           </div>
           
           {/* Quick Impersonation selection helper direct from secondary bar */}
-          <div className="flex items-center gap-1.5 bg-white border border-black px-2 py-1 max-w-sm shrink-0 uppercase mx-auto md:mx-0">
-            <span className="text-[8px] font-mono text-gray-400 font-black block">Trocar Unidade:</span>
+          <div className="flex items-center gap-1.5 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-xs max-w-sm shrink-0 uppercase mx-auto md:mx-0">
+            <span className="text-[8px] font-mono text-slate-400 font-bold block">Trocar Unidade:</span>
             <select
               id="global_select_impersonator"
               value={activeFranchiseeId}
               onChange={(e) => handleImpersonateFranchisee(e.target.value)}
-              className="bg-white text-[10px] font-sans font-black uppercase text-black focus:outline-none"
+              className="bg-white text-[10px] font-sans font-bold uppercase text-slate-700 focus:outline-none cursor-pointer"
             >
               {franchisees.map(f => (
                 <option key={f.id} value={f.id}>

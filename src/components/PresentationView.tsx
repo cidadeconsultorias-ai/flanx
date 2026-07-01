@@ -94,33 +94,33 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
     <div className="space-y-12 max-w-6xl mx-auto" id="pitch_deck_container">
       
       {/* HERO BANNER SECTION */}
-      <section className="bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950 text-white p-8 md:p-12 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden" id="presentation_hero">
+      <section className="bg-gradient-to-br from-navy via-slate-900 to-slate-950 text-white p-8 md:p-12 rounded-3xl shadow-lg relative overflow-hidden" id="presentation_hero">
         {/* Abstract background grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
         
         {/* Glow effect */}
-        <div className="absolute -top-12 -right-12 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-12 -right-12 w-64 h-64 bg-coral/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-4xl space-y-6">
-          <div className="inline-flex items-center gap-1.5 bg-amber-400 text-black text-[10px] font-mono font-black uppercase px-2.5 py-1 border border-black rounded-xs">
-            <Sparkles className="w-3.5 h-3.5 animate-bounce text-slate-950" />
+          <div className="inline-flex items-center gap-1.5 bg-coral text-white text-[10px] font-sans font-bold uppercase px-3 py-1.5 rounded-full shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 animate-bounce text-white" />
             <span>Oportunidade de Negócio • Expansão FLANX 2026</span>
           </div>
           
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-sans font-black tracking-tight leading-none uppercase">
-            Comece seu negócio em 7 dias <br />
-            <span className="text-amber-400 bg-slate-950 px-2 py-0.5 border border-amber-400">Com Estrutura Pronta</span>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-sans font-black tracking-tight leading-none uppercase text-white">
+            <span className="block whitespace-nowrap">Comece seu negócio em 7 dias</span>
+            <span className="text-coral bg-white/5 px-3 py-1 rounded-2xl border border-coral/20 inline-block mt-2">Com Estrutura Pronta</span>
           </h2>
           
-          <p className="text-base md:text-xl font-sans text-slate-100 max-w-3xl font-extrabold leading-relaxed border-l-4 border-amber-400 pl-4 bg-slate-950/40 p-3 rounded-sm">
+          <p className="text-base md:text-xl font-sans text-slate-200 max-w-3xl font-medium leading-relaxed border-l-4 border-coral pl-4 bg-slate-950/20 p-4 rounded-xl">
             Comece seu negócio em 7 dias com estrutura pronta, treinamento especializado e suporte. Comece a lucrar na primeira semana.
           </p>
 
           <div className="flex flex-wrap gap-3 pt-4">
             <button
               onClick={onGoToOnboarding}
-              className="bg-amber-400 hover:bg-white text-black font-sans font-black text-xs md:text-sm uppercase tracking-wider py-3 px-6 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 transition-all flex items-center gap-2"
+              className="bg-coral hover:bg-white hover:text-coral text-white font-sans font-bold text-xs md:text-sm uppercase tracking-wider py-3 px-6 rounded-full shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
               id="hero_pitch_cta_btn"
             >
               <span>Quero Fazer Minha Candidatura</span>
@@ -129,9 +129,9 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
             
             <a
               href="#interactive_calculator"
-              className="bg-slate-900 border-2 border-slate-700 hover:border-amber-400 text-slate-300 hover:text-white font-mono text-[11px] md:text-xs uppercase px-5 py-3 flex items-center gap-2 transition-all"
+              className="bg-slate-900 border border-slate-700 hover:border-coral text-slate-300 hover:text-white font-sans text-[11px] md:text-xs uppercase px-5 py-3 rounded-full flex items-center gap-2 transition-all shadow-sm"
             >
-              <Calculator className="w-4 h-4 text-amber-400" />
+              <Calculator className="w-4 h-4 text-coral" />
               <span>Simular Meus Ganhos</span>
             </a>
           </div>
@@ -139,20 +139,20 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
 
         {/* Floating statistics widgets */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 pt-8 border-t border-slate-800">
-          <div className="p-2.5 bg-slate-950/80 border border-slate-800 rounded-sm">
-            <span className="text-[10px] font-mono text-zinc-500 block uppercase">Comissão Direta</span>
-            <span className="text-xl font-bold font-mono text-amber-400">Até {globalSplitRate}%</span>
+          <div className="p-3 bg-slate-950/55 border border-slate-800/80 rounded-xl">
+            <span className="text-[10px] font-mono text-zinc-400 block uppercase">Comissão Direta</span>
+            <span className="text-xl font-bold font-mono text-coral">Até {globalSplitRate}%</span>
           </div>
-          <div className="p-2.5 bg-slate-950/80 border border-slate-800 rounded-sm">
-            <span className="text-[10px] font-mono text-zinc-500 block uppercase">Tempo de Saque</span>
+          <div className="p-3 bg-slate-950/55 border border-slate-800/80 rounded-xl">
+            <span className="text-[10px] font-mono text-zinc-400 block uppercase">Tempo de Saque</span>
             <span className="text-xl font-bold font-mono text-emerald-400">PIX Instantâneo</span>
           </div>
-          <div className="p-2.5 bg-slate-950/80 border border-slate-800 rounded-sm">
-            <span className="text-[10px] font-mono text-zinc-500 block uppercase">Taxa de Adesão</span>
+          <div className="p-3 bg-slate-950/55 border border-slate-800/80 rounded-xl">
+            <span className="text-[10px] font-mono text-zinc-400 block uppercase">Taxa de Adesão</span>
             <span className="text-xl font-bold font-mono text-white">R$ 0,00</span>
           </div>
-          <div className="p-2.5 bg-slate-950/80 border border-slate-800 rounded-sm">
-            <span className="text-[10px] font-mono text-zinc-500 block uppercase">Royalty Fixo</span>
+          <div className="p-3 bg-slate-950/55 border border-slate-800/80 rounded-xl">
+            <span className="text-[10px] font-mono text-zinc-400 block uppercase">Royalty Fixo</span>
             <span className="text-xl font-bold font-mono text-blue-400">R$ 49/mês</span>
           </div>
         </div>
@@ -160,8 +160,8 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
 
       {/* SEGMENT SELECTION */}
       <div className="space-y-4 text-center">
-        <span className="text-xs font-mono font-bold text-amber-600 uppercase tracking-widest block">PERFIS DE PARCERIA</span>
-        <h3 className="text-2xl md:text-3xl font-black uppercase text-black">Apresentação sob medida para o seu Perfil</h3>
+        <span className="text-xs font-mono font-bold text-coral uppercase tracking-widest block">PERFIS DE PARCERIA</span>
+        <h3 className="text-2xl md:text-3xl font-black uppercase text-slate-900">Apresentação sob medida para o seu Perfil</h3>
         <p className="text-xs text-gray-500 max-w-xl mx-auto font-medium">
           Selecione a modalidade que melhor combina com seu estilo de atuação para ver os benefícios específicos e plano de ação:
         </p>
@@ -176,10 +176,10 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
             <button
               key={seg.id}
               onClick={() => setActiveSegment(seg.id as any)}
-              className={`py-2 px-4 text-xs font-black uppercase border-2 border-black transition-all ${
+              className={`py-2 px-5 text-xs font-bold uppercase border transition-all rounded-full cursor-pointer ${
                 activeSegment === seg.id
-                  ? 'bg-amber-400 text-black shadow-none translate-y-[2px]'
-                  : 'bg-white hover:bg-slate-50 text-slate-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
+                  ? 'bg-coral text-white border-transparent shadow-md'
+                  : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200 shadow-sm'
               }`}
             >
               {seg.label}
@@ -189,7 +189,7 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
       </div>
 
       {/* DINAMIC SEGMENT PRESENTATION BLOCK */}
-      <div className="bg-white border-4 border-black p-6 md:p-10 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" id="presentation_segment_body">
+      <div className="bg-white border border-slate-100 p-6 md:p-10 rounded-3xl shadow-md" id="presentation_segment_body">
         
         {/* ALL / GENERAL OVERVIEW */}
         {activeSegment === 'all' && (
