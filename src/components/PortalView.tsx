@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HUB_PRODUCTS } from '../data';
-import { Product, ConsultantState, SimulatedSale, LeadInfo } from '../types';
+import { Product, ConsultantState, SimulatedSale, LeadInfo, ConsultantLevel } from '../types';
 import { 
   Sparkles, 
   Copy, 
@@ -125,6 +125,85 @@ export default function PortalView({
     setTimeout(() => setCopiedCopy(false), 2000);
   };
 
+  // Helper to calculate exact commission based on level and product requested by the user
+  const calculateSimulationCommission = (product: Product, level: ConsultantLevel) => {
+    let commissionPaid = 0;
+    let details = '';
+
+    if (product.id === 'telemedicina') {
+      if (level === 'Junior') {
+        const immediate = 80 * 0.50; // 50%
+        const recurrent = 80 * 0.20; // 20%
+        commissionPaid = immediate + recurrent; // R$ 56.00
+        details = "Júnior: 50% adesão (R$ 40,00) + 20% recorrente (R$ 16,00)";
+      } else if (level === 'Supervisor') {
+        const immediate = 80 * 0.50; // 50%
+        const recurrent = 80 * 0.20; // 20%
+        const teamRecurrent = 80 * 0.10; // 10%
+        commissionPaid = immediate + recurrent + teamRecurrent; // R$ 64.00
+        details = "Supervisor: Ganhos Júnior + 10% recorrente equipe (R$ 8,00)";
+      } else { // Gerente
+        const immediate = 80 * 0.50;
+        const recurrent = 80 * 0.20;
+        const teamRecurrent = 80 * 0.10;
+        const supervisorBonus = (immediate + recurrent + teamRecurrent) * 0.05; // 5%
+        commissionPaid = immediate + recurrent + teamRecurrent + supervisorBonus; // R$ 67.20
+        details = "Gerente: Ganhos anteriores + 5% sobre ganhos supervisores (R$ 3,20)";
+      }
+    } else if (product.id === 'protecao-veicular') {
+      if (level === 'Junior') {
+        const immediate = 120 * 0.75; // 75%
+        const recurrent = 15; // R$ 15,00
+        commissionPaid = immediate + recurrent; // R$ 105.00
+        details = "Júnior: 75% adesão (R$ 90,00) + recorrente (R$ 15,00)";
+      } else if (level === 'Supervisor') {
+        const immediate = 120 * 0.75;
+        const recurrent = 15;
+        const teamRecurrent = 10;
+        commissionPaid = immediate + recurrent + teamRecurrent; // R$ 115.00
+        details = "Supervisor: Ganhos Júnior + recorrente equipe (R$ 10,00)";
+      } else { // Gerente
+        const immediate = 120 * 0.75;
+        const recurrent = 15;
+        const teamRecurrent = 10;
+        const supervisorBonus = (immediate + recurrent + teamRecurrent) * 0.05;
+        commissionPaid = immediate + recurrent + teamRecurrent + supervisorBonus; // R$ 120.75
+        details = "Gerente: Ganhos anteriores + 5% sobre ganhos supervisores (R$ 5,75)";
+      }
+    } else if (product.id === 'energia-limpa') {
+      if (level === 'Junior') {
+        commissionPaid = 15; // R$ 15,00 commission on bill savings
+        details = "Júnior: Comissão mensal fixa por indicação ativa (R$ 15,00)";
+      } else if (level === 'Supervisor') {
+        commissionPaid = 25; // R$ 15 + R$ 10 team
+        details = "Supervisor: Ganhos Júnior + bônus de equipe (R$ 10,00)";
+      } else { // Gerente
+        commissionPaid = 30; // R$ 25 + R$ 5 bonus
+        details = "Gerente: Ganhos anteriores + bônus de gestão (R$ 5,00)";
+      }
+    } else if (product.id === 'soeh') {
+      if (level === 'Junior') {
+        commissionPaid = 15; // 30% of R$ 50
+        details = "Júnior: 30% de comissão por afiliação ativa (R$ 15,00)";
+      } else if (level === 'Supervisor') {
+        commissionPaid = 20; // R$ 15 + R$ 5 team
+        details = "Supervisor: Ganhos Júnior + bônus de equipe (R$ 5,00)";
+      } else { // Gerente
+        commissionPaid = 25; // R$ 20 + R$ 5 management
+        details = "Gerente: Ganhos anteriores + bônus de gestão (R$ 5,00)";
+      }
+    } else {
+      // Em breve
+      commissionPaid = 0;
+      details = "Em breve: Mais comissões em breve";
+    }
+
+    const price = product.price || 0;
+    const hubSplit = price > commissionPaid ? price - commissionPaid : 0;
+
+    return { commissionPaid, hubSplit, details };
+  };
+
   // Run checkout simulation
   const handleSimulateSale = (e: React.FormEvent) => {
     e.preventDefault();
@@ -137,10 +216,7 @@ export default function PortalView({
     setSuccessMessage(null);
 
     setTimeout(() => {
-      // Calculate split commission dynamically using global split rate set by the franchisor!
-      const splitPercentage = globalSplitRate / 100;
-      const commEarned = activeProduct.price * splitPercentage;
-      const hubSplitAmount = activeProduct.price * (1 - splitPercentage);
+      const { commissionPaid: commEarned, hubSplit: hubSplitAmount, details } = calculateSimulationCommission(activeProduct, consultant.level);
 
       // Add simulated sale to global list
       const newSale: SimulatedSale = {
@@ -164,11 +240,11 @@ export default function PortalView({
         balance: prev.balance + commEarned,
         points: prev.points + 2,
         salesCount: prev.salesCount + 1,
-        level: prev.salesCount + 1 >= 8 ? 'Premium' : prev.level
+        level: prev.salesCount + 1 >= 8 ? 'Supervisor' : prev.level
       }));
 
       setIsSimulating(false);
-      setSuccessMessage(`PIX recebido e processado! R$ ${commEarned.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} foram creditados na sua carteira.`);
+      setSuccessMessage(`PIX recebido e processado! R$ ${commEarned.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} foram creditados na sua carteira. (${details})`);
       
       // Clear forms
       setCustomerName('');
@@ -274,7 +350,7 @@ export default function PortalView({
               </span>
             </div>
             <span className="text-[9px] text-gray-500 block uppercase font-bold tracking-tight pt-1">
-              {consultant.level === 'Junior' ? 'Ganhe pontos na academia' : 'Franqueado Líder Premium'}
+              {consultant.level === 'Junior' ? 'Ganhe pontos na academia' : consultant.level === 'Supervisor' ? 'Franqueado Lider Supervisor' : 'Franqueado Lider Gerente'}
             </span>
           </div>
           <div className="p-2.5 bg-black text-amber-400 border border-black shrink-0">

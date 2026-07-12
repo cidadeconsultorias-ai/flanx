@@ -7,30 +7,30 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   
   --color-navy: #000080;
-  --color-coral: #f88379;
+  --color-coral: #ff4e20;
 
   /* Redefine default Tailwind color schemes for amber, yellow, slate to match brand */
-  --color-amber-50: #fff8f7;
-  --color-amber-100: #ffebe9;
-  --color-amber-200: #ffd1cc;
-  --color-amber-300: #ffadac;
-  --color-amber-400: #f88379;
-  --color-amber-500: #e36a60;
-  --color-amber-600: #ca5248;
-  --color-amber-700: #b13c32;
-  --color-amber-800: #98261e;
-  --color-amber-900: #7f120a;
+  --color-amber-50: #fff8f5;
+  --color-amber-100: #ffebe5;
+  --color-amber-200: #ffd3c8;
+  --color-amber-300: #ffa893;
+  --color-amber-400: #ff4e20;
+  --color-amber-500: #e6390a;
+  --color-amber-600: #c72f05;
+  --color-amber-700: #a82502;
+  --color-amber-800: #891c00;
+  --color-amber-900: #6a1400;
 
-  --color-yellow-50: #fff8f7;
-  --color-yellow-100: #ffebe9;
-  --color-yellow-200: #ffd1cc;
-  --color-yellow-300: #ffadac;
-  --color-yellow-400: #f88379;
-  --color-yellow-500: #e36a60;
-  --color-yellow-600: #ca5248;
-  --color-yellow-700: #b13c32;
-  --color-yellow-800: #98261e;
-  --color-yellow-900: #7f120a;
+  --color-yellow-50: #fff8f5;
+  --color-yellow-100: #ffebe5;
+  --color-yellow-200: #ffd3c8;
+  --color-yellow-300: #ffa893;
+  --color-yellow-400: #ff4e20;
+  --color-yellow-500: #e6390a;
+  --color-yellow-600: #c72f05;
+  --color-yellow-700: #a82502;
+  --color-yellow-800: #891c00;
+  --color-yellow-900: #6a1400;
 
   --color-slate-900: #000080;
   --color-slate-950: #00004a;
@@ -64,11 +64,11 @@ button[class*="bg-amber-400"],
 button[class*="bg-yellow-400"],
 button.bg-amber-400,
 button.bg-yellow-400 {
-  background-color: #f88379 !important; /* coral */
+  background-color: #ff4e20 !important; /* reddish orange */
   color: #ffffff !important;
   border-color: transparent !important;
   font-weight: 600 !important;
-  box-shadow: 0 4px 12px rgba(248, 131, 121, 0.25) !important;
+  box-shadow: 0 4px 12px rgba(255, 78, 32, 0.25) !important;
 }
 
 button[class*="bg-amber-400"]:hover,

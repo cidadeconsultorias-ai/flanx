@@ -1,6 +1,6 @@
 export type VerticalType = 'Care' | 'Education' | 'Business';
 
-export type ConsultantLevel = 'Junior' | 'Premium' | 'Master';
+export type ConsultantLevel = 'Junior' | 'Supervisor' | 'Gerente';
 
 export interface Product {
   id: string;

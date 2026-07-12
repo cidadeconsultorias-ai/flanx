@@ -33,12 +33,12 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
   const [activeSegment, setActiveSegment] = useState<'all' | 'entrepreneur' | 'associate' | 'representative'>('all');
 
   // Calculator states
-  const [partnerLevel, setPartnerLevel] = useState<'STARTER' | 'GROWTH' | 'MASTER'>('GROWTH');
+  const [partnerLevel, setPartnerLevel] = useState<'JUNIOR' | 'SUPERVISOR' | 'GERENTE'>('SUPERVISOR');
   const [telemedicinaSales, setTelemedicinaSales] = useState<number>(10);
-  const [solarReferrals, setSolarReferrals] = useState<number>(3);
-  const [maquininhaPlacements, setMaquininhaPlacements] = useState<number>(5);
-  const [pumaSales, setPumaSales] = useState<number>(4);
-  const [ciconSales, setCiconSales] = useState<number>(6);
+  const [protecaoVeicularSales, setProtecaoVeicularSales] = useState<number>(5);
+  const [energiaLimpaSales, setEnergiaLimpaSales] = useState<number>(3);
+  const [soehSales, setSoehSales] = useState<number>(8);
+  const [emBreveSales, setEmBreveSales] = useState<number>(2);
 
   // Network Simulator states
   const [simulatorTab, setSimulatorTab] = useState<'individual' | 'network'>('individual');
@@ -47,33 +47,50 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
   const [networkMaster, setNetworkMaster] = useState<number>(20);
   const [averageSalesPerPartner, setAverageSalesPerPartner] = useState<number>(3);
 
-  // Financial constants
-  const prices = {
-    telemedicina: 79.00,
-    solarReferral: 150.00,
-    maquininha: 100.00,
-    puma: 120.00,
-    cicon: 297.00
+  // Dynamic commission calculations based on level and product
+  const getCommissionInfo = (prod: string, level: 'JUNIOR' | 'SUPERVISOR' | 'GERENTE') => {
+    if (prod === 'telemedicina') {
+      if (level === 'JUNIOR') return { immediate: 40, recurrent: 16, label: "50% 1ª Mensalidade (R$ 40) + 20% Recorrente (R$ 16)" };
+      if (level === 'SUPERVISOR') return { immediate: 40, recurrent: 24, label: "50% 1ª Mensalidade (R$ 40) + 20% Recorrente + 10% Recorrente Equipe (R$ 24)" };
+      return { immediate: 40, recurrent: 25.2, label: "Ganhos anteriores + 5% bônus de gerência de equipe (R$ 25.20)" };
+    }
+    if (prod === 'protecao-veicular') {
+      if (level === 'JUNIOR') return { immediate: 90, recurrent: 15, label: "75% Adesão (R$ 90) + R$ 15 Recorrente" };
+      if (level === 'SUPERVISOR') return { immediate: 90, recurrent: 25, label: "75% Adesão (R$ 90) + R$ 15 Recorrente + R$ 10 Equipe" };
+      return { immediate: 90, recurrent: 30.75, label: "Ganhos anteriores + 5% bônus de gerência (R$ 30.75)" };
+    }
+    if (prod === 'energia-limpa') {
+      if (level === 'JUNIOR') return { immediate: 0, recurrent: 15, label: "Comissão mensal recorrente de R$ 15,00" };
+      if (level === 'SUPERVISOR') return { immediate: 0, recurrent: 25, label: "Recorrente R$ 15 + R$ 10 Equipe (R$ 25,00)" };
+      return { immediate: 0, recurrent: 30, label: "Ganhos anteriores + R$ 5 bônus de gerência (R$ 30,00)" };
+    }
+    if (prod === 'soeh') {
+      if (level === 'JUNIOR') return { immediate: 0, recurrent: 15, label: "30% de afiliação recorrente mensal (R$ 15,00)" };
+      if (level === 'SUPERVISOR') return { immediate: 0, recurrent: 20, label: "Recorrente R$ 15 + R$ 5 Equipe (R$ 20,00)" };
+      return { immediate: 0, recurrent: 25, label: "Ganhos anteriores + R$ 5 bônus de gerência (R$ 25,00)" };
+    }
+    return { immediate: 0, recurrent: 50, label: "Estime comissões futuras de lançamentos" };
   };
 
-  // Split rates based on level (STARTER, GROWTH, MASTER comission rates for the sales person/entrepreneur)
-  const splitRates = {
-    STARTER: 0.65,
-    GROWTH: 0.75,
-    MASTER: 0.80
-  };
+  const commTelemedicina = getCommissionInfo('telemedicina', partnerLevel);
+  const commProtecao = getCommissionInfo('protecao-veicular', partnerLevel);
+  const commEnergia = getCommissionInfo('energia-limpa', partnerLevel);
+  const commSoeh = getCommissionInfo('soeh', partnerLevel);
+  const commEmBreve = getCommissionInfo('em-breve', partnerLevel);
 
-  // Calculations
-  const calculatedSplit = splitRates[partnerLevel];
-  const revTelemedicina = telemedicinaSales * prices.telemedicina * calculatedSplit;
-  const revSolar = solarReferrals * prices.solarReferral * calculatedSplit;
-  const revMaquininha = maquininhaPlacements * prices.maquininha * calculatedSplit;
-  const revPuma = pumaSales * prices.puma * calculatedSplit;
-  const revCicon = ciconSales * prices.cicon * calculatedSplit;
-  
-  const totalRecurrentMouthlyVal = revTelemedicina + revSolar + revPuma; // telemedicina, solar and puma are recurrent
-  const totalImmediateVal = revMaquininha + revCicon;
-  const grandTotalEstimated = totalRecurrentMouthlyVal + totalImmediateVal;
+  const revTelemedicina = telemedicinaSales * (commTelemedicina.immediate + commTelemedicina.recurrent);
+  const revProtecao = protecaoVeicularSales * (commProtecao.immediate + commProtecao.recurrent);
+  const revEnergia = energiaLimpaSales * (commEnergia.immediate + commEnergia.recurrent);
+  const revSoeh = soehSales * (commSoeh.immediate + commSoeh.recurrent);
+  const revEmBreve = emBreveSales * (commEmBreve.immediate + commEmBreve.recurrent);
+
+  const totalImmediateVal = (telemedicinaSales * commTelemedicina.immediate) + (protecaoVeicularSales * commProtecao.immediate);
+  const totalRecurrentMouthlyVal = (telemedicinaSales * commTelemedicina.recurrent) + 
+                                   (protecaoVeicularSales * commProtecao.recurrent) + 
+                                   (energiaLimpaSales * commEnergia.recurrent) + 
+                                   (soehSales * commSoeh.recurrent) +
+                                   (emBreveSales * commEmBreve.recurrent);
+  const grandTotalEstimated = totalImmediateVal + totalRecurrentMouthlyVal;
 
   // Network simulation math
   const subBaseStarter = 0;
@@ -494,12 +511,12 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
               
               {/* Level selector */}
               <div className="space-y-2">
-                <label className="text-xs font-extrabold uppercase text-slate-800 block">Escolha seu Plano de Atuação:</label>
+                <label className="text-xs font-extrabold uppercase text-slate-800 block">Escolha seu Nível de Atuação para Simular:</label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {[
-                    { level: 'STARTER', rate: '65%', desc: 'Grátis Teste', color: 'border-slate-400' },
-                    { level: 'GROWTH', rate: '75%', desc: 'R$ 197/mês', color: 'border-amber-400' },
-                    { level: 'MASTER', rate: '80%', desc: 'R$ 497/mês', color: 'border-cyan-400' }
+                    { level: 'JUNIOR', rate: 'Comissão Direta', desc: 'Produtor Júnior', color: 'border-slate-400' },
+                    { level: 'SUPERVISOR', rate: '+10% de Equipe', desc: 'Liderança Ativa', color: 'border-amber-400' },
+                    { level: 'GERENTE', rate: '+5% de Supervisão', desc: 'Direção Geral', color: 'border-cyan-400' }
                   ].map(item => (
                     <button
                       key={item.level}
@@ -512,12 +529,14 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
                       }`}
                     >
                       <div className="flex justify-between items-center w-full">
-                        <span className="text-xs font-black font-sans uppercase">{item.level}</span>
+                        <span className="text-xs font-black font-sans uppercase">
+                          {item.level === 'JUNIOR' ? 'Júnior' : item.level === 'SUPERVISOR' ? 'Supervisor' : 'Gerente'}
+                        </span>
                         {partnerLevel === item.level && <Check className="w-3.5 h-3.5 stroke-[3] text-black" />}
                       </div>
-                      <div className="flex justify-between items-baseline mt-4 w-full">
-                        <span className="text-base font-mono font-black">{item.rate} comissão</span>
-                        <span className="text-[9px] font-bold uppercase text-slate-600">{item.desc}</span>
+                      <div className="flex flex-col mt-4 w-full">
+                        <span className="text-sm font-sans font-extrabold text-slate-900">{item.desc}</span>
+                        <span className="text-[10px] font-mono font-bold text-slate-600 uppercase mt-0.5">{item.rate}</span>
                       </div>
                     </button>
                   ))}
@@ -527,35 +546,31 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
               {/* Dynamic level info card */}
               <div className="border-2 border-black p-4 bg-slate-50 space-y-2">
                 <strong className="text-xs text-slate-900 uppercase block">
-                  Benefícios do plano {partnerLevel}:
+                  Regras de Ganho para o nível {partnerLevel === 'JUNIOR' ? 'Júnior' : partnerLevel === 'SUPERVISOR' ? 'Supervisor' : 'Gerente'}:
                 </strong>
-                {partnerLevel === 'STARTER' && (
+                {partnerLevel === 'JUNIOR' && (
                   <ul className="text-[11px] text-gray-700 space-y-1.5 font-mono list-disc pl-4">
-                    <li>Duração de 30 dias (prova de conceito para ver na prática)</li>
-                    <li>Sem taxa mensal inicial para experimentar rápido</li>
-                    <li>Ganho repassado: <strong className="text-black font-bold">65% das comissões</strong> (e 35% ficam retidos)</li>
-                    <li>Acesso básico aos materiais e treinamentos da FLANX</li>
+                    <li><strong className="text-black">Função de Entrega Direta:</strong> Focado em atendimento individual e vendas de alta conversão</li>
+                    <li><strong className="text-black">Telemedicina:</strong> 50% de comissão na primeira mensalidade + 20% recorrente todos os meses</li>
+                    <li><strong className="text-black">Proteção Veicular:</strong> 75% do valor de adesão do cliente + Recorrência mensal definida por veículo</li>
+                    <li><strong className="text-black">Energia Limpa:</strong> Ganho recorrente mensal de R$ 15,00 por cliente economizando</li>
+                    <li><strong className="text-black">Programa SOEH:</strong> 30% de afiliação recorrente sobre assinaturas de desenvolvimento pessoal</li>
                   </ul>
                 )}
-                {partnerLevel === 'GROWTH' && (
+                {partnerLevel === 'SUPERVISOR' && (
                   <ul className="text-[11px] text-gray-700 space-y-1.5 font-mono list-disc pl-4">
-                    <li>Suporte focado em crescimento acelerado</li>
-                    <li>Treinamento completo e avançado conduzido por especialistas</li>
-                    <li>Acesso a CRM profissional + ferramentas de tráfego e marketing</li>
-                    <li>Suporte 1-on-1 mensal direto para alinhar sua estratégia</li>
-                    <li>Ganho de comissão superior: <strong className="text-black font-bold">75% diretos para você</strong></li>
-                    <li>Bônus: Acesso instantâneo a produtos estendidos e bônus especiais</li>
-                    <li>Vantagem vitalícia: primeiro cliente do mês é grátis na sua contabilidade</li>
+                    <li><strong className="text-black">Ganhos Acumulados:</strong> Recebe todos os ganhos de Produtor Júnior nas vendas diretas</li>
+                    <li><strong className="text-black">Remuneração de Liderança:</strong> +10% de comissão recorrente sobre a equipe supervisionada</li>
+                    <li><strong className="text-black">Energia Limpa & SOEH:</strong> Recorrência extra por acompanhamento e mentoria de novos consultores</li>
+                    <li><strong className="text-black">Aceleração:</strong> Perfeito para quem quer construir rede e multiplicar vendas sem depender apenas do esforço próprio</li>
                   </ul>
                 )}
-                {partnerLevel === 'MASTER' && (
+                {partnerLevel === 'GERENTE' && (
                   <ul className="text-[11px] text-gray-700 space-y-1.5 font-mono list-disc pl-4">
-                    <li>Nossa modalidade de elite para crescimento corporativo</li>
-                    <li>Ganho máximo do mercado: <strong className="text-black font-bold">80% em todas as parcerias</strong></li>
-                    <li>Suporte ilimitado e imediato prioritário</li>
-                    <li>Acesso VIP a novos lançamentos e produtos EXCLUSIVOS</li>
-                    <li>Certificação oficial FLANX que aumenta sua autoridade</li>
-                    <li>Revenue share garantido no Hub ao atingir faturamento de R$ 10k/mês</li>
+                    <li><strong className="text-black">Elite da Microfranquia:</strong> Todos os ganhos de Júnior + Supervisor</li>
+                    <li><strong className="text-black">Bônus de Gerência Superior:</strong> +5% sobre o faturamento de todos os Supervisores da sua estrutura</li>
+                    <li><strong className="text-black">Participação de Resultados:</strong> Acesso prioritário a rodadas de leads de tráfego pago da matriz</li>
+                    <li><strong className="text-black">Dashboard Executivo:</strong> Visão completa de crescimento de filiais e controle de repasse automático</li>
                   </ul>
                 )}
               </div>
@@ -578,100 +593,100 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
                 />
                 <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
                   <span>0 vendas</span>
-                  <span>Preço unitário: R$ 79,00/mês</span>
+                  <span>Mensalidade: R$ 80,00 | Comissão Ativa: {commTelemedicina.label}</span>
                   <span>50 vendas</span>
                 </div>
               </div>
 
-              {/* Slider 2: Solar Energy referrals */}
+              {/* Slider 2: Proteção Veicular */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="font-extrabold text-slate-800 uppercase">2. Indicações de Energia Solar (Contratos/mês)</span>
+                  <span className="font-extrabold text-slate-800 uppercase">2. Proteção Veicular (Adesões/mês)</span>
                   <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
-                    {solarReferrals} un
+                    {protecaoVeicularSales} un
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="30" 
+                  value={protecaoVeicularSales}
+                  onChange={(e) => setProtecaoVeicularSales(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
+                />
+                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                  <span>0 adesões</span>
+                  <span>Mensalidade Base: R$ 120,00 | Comissão Ativa: {commProtecao.label}</span>
+                  <span>30 adesões</span>
+                </div>
+              </div>
+
+              {/* Slider 3: Energia Limpa */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-extrabold text-slate-800 uppercase">3. Energia Limpa - Desconto na Conta (Contratos/mês)</span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                    {energiaLimpaSales} un
                   </span>
                 </div>
                 <input 
                   type="range" 
                   min="0" 
                   max="20" 
-                  value={solarReferrals}
-                  onChange={(e) => setSolarReferrals(Number(e.target.value))}
+                  value={energiaLimpaSales}
+                  onChange={(e) => setEnergiaLimpaSales(Number(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
                 />
                 <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
                   <span>0 indicações</span>
-                  <span>Bônus pago base: R$ 150,00</span>
+                  <span>Desconto na conta | Comissão recorrente mensal: {commEnergia.label}</span>
                   <span>20 indicações</span>
                 </div>
               </div>
 
-              {/* Slider 3: Card Machines */}
+              {/* Slider 4: SOEH - Desenvolvimento Pessoal */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="font-extrabold text-slate-800 uppercase">3. Maquininhas Pro Instaladas (Unidades/mês)</span>
+                  <span className="font-extrabold text-slate-800 uppercase">4. SOEH - Desenvolvimento Pessoal (Assinaturas/mês)</span>
                   <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
-                    {maquininhaPlacements} un
+                    {soehSales} un
                   </span>
                 </div>
                 <input 
                   type="range" 
                   min="0" 
-                  max="30" 
-                  value={maquininhaPlacements}
-                  onChange={(e) => setMaquininhaPlacements(Number(e.target.value))}
+                  max="40" 
+                  value={soehSales}
+                  onChange={(e) => setSoehSales(Number(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
                 />
                 <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
-                  <span>0 ativações</span>
-                  <span>Comissão direta base: R$ 100,00</span>
-                  <span>30 ativações</span>
+                  <span>0 assinaturas</span>
+                  <span>Mensalidade: R$ 50,00 | Comissão recorrente: {commSoeh.label}</span>
+                  <span>40 assinaturas</span>
                 </div>
               </div>
 
-              {/* Slider 4: Puma Proteção Veicular */}
+              {/* Slider 5: Em breve - Novas Oportunidades */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="font-extrabold text-slate-800 uppercase">4. Puma Proteção Veicular (Adesões/mês)</span>
+                  <span className="font-extrabold text-slate-800 uppercase">5. Em Breve - Novas Oportunidades (Projeção/mês)</span>
                   <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
-                    {pumaSales} un
+                    {emBreveSales} un
                   </span>
                 </div>
                 <input 
                   type="range" 
                   min="0" 
-                  max="30" 
-                  value={pumaSales}
-                  onChange={(e) => setPumaSales(Number(e.target.value))}
+                  max="15" 
+                  value={emBreveSales}
+                  onChange={(e) => setEmBreveSales(Number(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
                 />
                 <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
-                  <span>0 adesões</span>
-                  <span>Comissão direta base: R$ 120,00</span>
-                  <span>30 adesões</span>
-                </div>
-              </div>
-
-              {/* Slider 5: CICON100 EAD Courses */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="font-extrabold text-slate-800 uppercase">5. Vendas CICON100 EAD (Inscrições/mês)</span>
-                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
-                    {ciconSales} un
-                  </span>
-                </div>
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="30" 
-                  value={ciconSales}
-                  onChange={(e) => setCiconSales(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
-                />
-                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
-                  <span>0 matrículas</span>
-                  <span>Preço médio: R$ 297,00</span>
-                  <span>30 matrículas</span>
+                  <span>0 projeções</span>
+                  <span>Novos produtos homologados | Comissão estimada: {commEmBreve.label}</span>
+                  <span>15 projeções</span>
                 </div>
               </div>
 
@@ -685,69 +700,72 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                  <span className="text-slate-400">Telemedicina ({partnerLevel}):</span>
-                  <span className="font-mono text-white">
+                  <span className="text-slate-400">Telemedicina Conecta:</span>
+                  <span className="font-mono text-white font-bold">
                     R$ {revTelemedicina.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
                 
                 <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                  <span className="text-slate-400">Energia Solar ({partnerLevel}):</span>
-                  <span className="font-mono text-white">
-                    R$ {revSolar.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  <span className="text-slate-400">Proteção Veicular:</span>
+                  <span className="font-mono text-white font-bold">
+                    R$ {revProtecao.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                  <span className="text-slate-400">Maquininhas Pro ({partnerLevel}):</span>
-                  <span className="font-mono text-white">
-                    R$ {revMaquininha.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  <span className="text-slate-400">Energia Limpa:</span>
+                  <span className="font-mono text-white font-bold">
+                    R$ {revEnergia.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                  <span className="text-slate-400">Puma Proteção ({partnerLevel}):</span>
-                  <span className="font-mono text-white">
-                    R$ {revPuma.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  <span className="text-slate-400">Programa SOEH:</span>
+                  <span className="font-mono text-white font-bold">
+                    R$ {revSoeh.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                  <span className="text-slate-400">Cursos CICON100 ({partnerLevel}):</span>
-                  <span className="font-mono text-white">
-                    R$ {revCicon.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  <span className="text-slate-400">Novas Oportunidades:</span>
+                  <span className="font-mono text-white font-bold">
+                    R$ {revEmBreve.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
               </div>
 
               <div className="p-4 bg-slate-900 border border-slate-800 text-center space-y-1">
-                <span className="text-[8.5px] font-mono text-slate-400 uppercase tracking-wider block">faturamento mensal estimado</span>
+                <span className="text-[8.5px] font-mono text-slate-400 uppercase tracking-wider block">ganho total simulado</span>
                 <p className="text-3xl font-mono font-black text-emerald-400 tracking-tight">
                   R$ {grandTotalEstimated.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </p>
                 <span className="text-[8.5px] font-bold text-amber-400 uppercase block">
                   Sendo R$ {totalRecurrentMouthlyVal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} /mês de recorrência líquida
                 </span>
+                <span className="text-[8.5px] text-slate-400 uppercase block">
+                  E R$ {totalImmediateVal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} pagos de adesão imediata
+                </span>
               </div>
 
               <div className="space-y-2 text-[10px] text-slate-400 leading-relaxed bg-[#0b0f19] p-3 border border-slate-900 rounded-sm">
                 <div className="flex justify-between text-white font-extrabold uppercase border-b border-slate-800 pb-1 mb-1">
-                  <span>Plano Selecionado:</span>
-                  <span>Valores</span>
+                  <span>Plano de Carreira:</span>
+                  <span>{partnerLevel === 'JUNIOR' ? 'Júnior' : partnerLevel === 'SUPERVISOR' ? 'Supervisor' : 'Gerente'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Mensalidade da Licença</span>
+                  <span>Atuação Recomendada:</span>
                   <span className="text-amber-400 font-bold font-mono">
-                    {partnerLevel === 'STARTER' ? 'Grátis' : partnerLevel === 'GROWTH' ? 'R$ 197/mês' : 'R$ 497/mês'}
+                    {partnerLevel === 'JUNIOR' ? 'Foco em Vendas' : partnerLevel === 'SUPERVISOR' ? 'Líder de Equipe' : 'Gerente Regional'}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Período de Setup Inicial</span>
-                  <span className="text-emerald-400 font-bold uppercase font-mono">Grátis</span>
+                  <span>Setup da Microfranquia:</span>
+                  <span className="text-emerald-400 font-bold uppercase font-mono">100% Gratuito</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Divisão das Comissões</span>
-                  <span className="text-white font-mono">Você {(splitRates[partnerLevel] * 100)}% | Hub {(100 - splitRates[partnerLevel] * 100)}%</span>
+                  <span>Repasse de Comissão:</span>
+                  <span className="text-white font-mono">Direto via PIX</span>
                 </div>
               </div>
 
@@ -755,7 +773,7 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
                 onClick={onGoToOnboarding}
                 className="w-full py-3 bg-amber-400 hover:bg-white text-black font-sans font-black text-xs uppercase tracking-widest border border-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] transition-all flex items-center justify-center gap-2"
               >
-                <span>Garantir Vaga no Plano {partnerLevel}</span>
+                <span>Garantir Minha Vaga como {partnerLevel === 'JUNIOR' ? 'Júnior' : partnerLevel === 'SUPERVISOR' ? 'Supervisor' : 'Gerente'}</span>
                 <ChevronRight className="w-4 h-4 stroke-[2.5]" />
               </button>
             </div>

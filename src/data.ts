@@ -4,271 +4,123 @@ export const HUB_PRODUCTS: Product[] = [
   // VERTICAL CARE
   {
     id: 'telemedicina',
-    name: 'Telemedicina Conecta 24h',
+    name: 'Telemedicina',
     vertical: 'Care',
-    price: 79,
-    commissionRate: 0.75, // R$ 59,25 to seller, rest to Hub
-    hubSplitRate: 0.25,
-    description: 'Acesso imediato a consultas médicas online 24h por dia, clínico geral e mais de 15 especialidades sem sair de casa.',
+    price: 80,
+    commissionRate: 0.50, // 50% on first payment
+    hubSplitRate: 0.50,
+    description: 'Acesso imediato a consultas médicas online 24h por dia, clínico geral e mais de 15 especialidades médicas sem carência.',
     recurrent: true,
-    marketingHook: 'Médico na tela do celular em até 10 minutos por menos de R$ 3 por dia. Proteja sua família sem filas de hospital!',
+    marketingHook: 'Fale com um médico por videochamada em menos de 10 minutos. Sem filas, sem carência e de qualquer lugar!',
     features: [
-      'Atendimento 24 horas no clínico geral',
-      'Receita médica, atestados e exames digitais diretos no app',
-      'Descontos de até 60% em farmácias parceiras',
-      'Adicione até 3 dependentes'
+      'Atendimento médico geral 24 horas por dia',
+      'Receitas de medicamentos, exames e atestados digitais na hora',
+      'Mais de 15 especialidades agendadas por teleconsulta',
+      'Descontos exclusivos em farmácias credenciadas em todo o país'
     ],
     suggestedSteps: [
-      'Gere seu link de afiliado personalizado abaixo.',
-      'Divulgue em grupos locais e de família no WhatsApp.',
-      'Apresente a dor de quem gasta horas no trânsito e na fila do hospital da sua região.'
+      'Envie o link de indicação para famílias e profissionais autônomos.',
+      'Ofereça a facilidade de evitar as filas de madrugada no pronto-socorro.',
+      'Use o roteiro persuasivo focado em economia e proteção imediata.'
     ],
-    targetAudience: 'Famílias autônomas, microempreendedores e quem não tem plano de saúde corporativo.',
+    targetAudience: 'Famílias sem plano de saúde, profissionais autônomos e quem busca agilidade no atendimento.',
     detailsUrl: '/care/telemedicina'
   },
   {
-    id: 'plano-funerario',
-    name: 'Assistência Familiar & Amparo',
+    id: 'protecao-veicular',
+    name: 'Proteção Veicular',
     vertical: 'Care',
-    price: 49,
-    commissionRate: 0.80, // R$ 39,20 to seller
-    hubSplitRate: 0.20,
-    description: 'Plano de assistência funerária completo com abrangência nacional, traslado e suporte completo nos momentos mais difíceis.',
+    price: 120,
+    commissionRate: 0.75, // 75% on adhesion
+    hubSplitRate: 0.25,
+    description: 'Proteção automotiva robusta contra roubo, furto, colisão, terceiros e assistência 24h completa nacional.',
     recurrent: true,
-    marketingHook: 'Garantia de tranquilidade e amparo para quem você ama nos momentos cruciais. Sem burocracia ou taxas surpresa.',
+    marketingHook: 'Proteja seu carro ou moto sem análise de perfil ou Serasa, com mensalidades que cabem perfeitamente no seu bolso.',
     features: [
-      'Cobertura nacional simplificada',
-      'Despesas com capela, flores e sepultamento inclusas',
-      'Opção com cremação inclusa',
-      'Suporte psicológico pós-luto'
+      'Sem consulta ao SPC/Serasa ou restrição de idade do condutor',
+      'Assistência 24h nacional (reboque, pane, chaveiro e táxi)',
+      'Cobertura contra colisão, capotamento, incêndio, roubo e furto',
+      'Fundo cooperado para indenização ágil de terceiros'
     ],
     suggestedSteps: [
-      'Destaque que a burocracia do luto é pesada e custa caro.',
-      'Ofereça como proteção para os pais ou avós.',
-      'Envie o vídeo institucional que detalha o carinho e cuidado do processo.'
+      'Aborde proprietários de veículos sem cobertura ou que reclamam do seguro tradicional.',
+      'Destaque la facilidade de aprovação imediata sem burocracia.',
+      'Ofereça cotações rápidas e agende o vistoriador digital.'
     ],
-    targetAudience: 'Pessoas maduras que querem poupar a família de custos e preocupações inesperadas.',
-    detailsUrl: '/care/plano-funerario'
+    targetAudience: 'Motoristas de aplicativos, taxistas, motociclistas e proprietários buscando custo-benefício.',
+    detailsUrl: '/care/protecao-veicular'
   },
   {
     id: 'energia-limpa',
-    name: 'Energia Solar Compartilhada',
+    name: 'Energia Limpa - desconto na conta',
     vertical: 'Care',
-    price: 150, // simulated average savings/recurrent referral value
-    commissionRate: 0.70, // R$ 105 to seller
-    hubSplitRate: 0.30,
-    description: 'Assinatura de energia limpa que reduz a conta de luz residencial ou comercial em até 15% todos os meses, sem instalar placas de energia.',
+    price: 150,
+    commissionRate: 0.10, // flat simulated commission percentage
+    hubSplitRate: 0.90,
+    description: 'Injeção de créditos de energia solar na rede para garantir redução direta de até 15% na conta de eletricidade mensal sem investimentos.',
     recurrent: true,
-    marketingHook: 'Reduza sua conta de eletricidade imediatamente sem investir R$ 1 em placas solares. Sustentabilidade e economia real!',
+    marketingHook: 'Reduza o custo da sua conta de luz todos os meses sem instalar placas solares e de graça!',
     features: [
-      'Desconto garantido de 10% a 15% todo mês',
-      'Contratação 100% digital e gratuita',
-      'Disponível para residências e pequenos comércios',
-      'Sem fidelidade ou alteração física na casa'
+      'Desconto real garantido de 10% a 15% na fatura mensal',
+      'Adesão 100% digital e sem custos de instalação ou obras',
+      'Redução automática de emissão de CO2 da sua residência',
+      'Sem fidelidade contratual ou alteração na rede física'
     ],
     suggestedSteps: [
-      'Peça a foto da última conta de energia do seu potencial cliente.',
-      'Use a calculadora embutida para demonstrar a economia anual líquida.',
-      'Siga o roteiro focado em "parar de desperdiçar dinheiro para a concessionária".'
+      'Solicite a conta de luz do cliente para calcular o desconto exato.',
+      'Apresente a economia de forma anualizada (ex: economize R$ 400 por ano).',
+      'Explique que é garantido por lei e regulado pela ANEEL.'
     ],
-    targetAudience: 'Qualquer pessoa ou comércio com conta de luz acima de R$ 150/mês que quer pagar menos.',
+    targetAudience: 'Residências e comércios locais com fatura de luz acima de R$ 150 mensais.',
     detailsUrl: '/care/energia-limpa'
   },
   {
-    id: 'puma-protecao-veicular',
-    name: 'Puma Proteção Veicular',
-    vertical: 'Care',
-    price: 120, // average monthly protection fee / recurrent referral commission
-    commissionRate: 0.75, // 75% to salesperson (R$ 90,00)
-    hubSplitRate: 0.25,
-    description: 'Proteção veicular integral e assistência 24 horas para carros, motos e utilitários, com ampla cobertura nacional contra furto, roubo, colisão e terceiros.',
+    id: 'soeh',
+    name: 'SOEH - Desenvolvimento Pessoal',
+    vertical: 'Education',
+    price: 50,
+    commissionRate: 0.30, // 30% affiliate
+    hubSplitRate: 0.70,
+    description: 'Programa continuado de desenvolvimento pessoal, inteligência emocional e maestria profissional por assinatura.',
     recurrent: true,
-    marketingHook: 'Proteja seu patrimônio sem análise de perfil de condutor e sem consulta SPC/Serasa. Mensalidade que cabe no bolso na Puma!',
+    marketingHook: 'Desperte o seu máximo potencial comportamental e financeiro com a mentoria contínua do SOEH.',
     features: [
-      'Sem consulta ao SPC/Serasa ou restrição de perfil',
-      'Assistência 24h completa (reboque, pane elétrica, chaveiro, taxi)',
-      'Cobertura integral contra roubo, furto, incêndio e colisão',
-      'Atendimento em todo o território nacional'
+      'Aulas semanais ao vivo com mentores de alta performance',
+      'Ferramentas práticas de produtividade, liderança e inteligência emocional',
+      'Acesso à comunidade fechada de alunos afiliados para networking',
+      'Testes periódicos de perfil e trilha de hábitos saudáveis'
     ],
     suggestedSteps: [
-      'Aborde taxistas, motoristas de aplicativo ou proprietários com carros/motos sem proteção.',
-      'Apresente o preço acessível comparado aos seguros tradicionais.',
-      'Gere cotações rápidas usando seus links de consultor diretamente pelo WhatsApp.'
+      'Promova o SOEH para pessoas buscando crescimento profissional e recolocação.',
+      'Destaque que o modelo por assinatura de afiliado permite criar renda recorrente.',
+      'Compartilhe as aulas abertas ou depoimentos de transformação.'
     ],
-    targetAudience: 'Proprietários de carros, motos e frotas que querem segurança robusta sem os preços elevados de seguros padrão.',
-    detailsUrl: '/care/puma-protecao'
-  },
-
-  // VERTICAL EDUCATION
-  {
-    id: 'cursos-livres',
-    name: 'Mega Acesso: Cursos Profissionalizantes',
-    vertical: 'Education',
-    price: 199,
-    commissionRate: 0.80, // R$ 159,20 to seller
-    hubSplitRate: 0.20,
-    description: 'Pacote anual com acesso ilimitado a mais de 250 cursos com certificações reconhecidas nas áreas de marketing, tecnologia, negócios e beleza.',
-    recurrent: false,
-    marketingHook: 'Abra as portas do mercado de trabalho. Invista na sua qualificação com mais de 200 cursos por uma parcela única!',
-    features: [
-      'Certificados válidos inclusos em todos os cursos',
-      'Suporte direto com tutores especialistas',
-      'Aulas práticas em vídeo pelo smartphone',
-      'Área de vagas parceiras exclusivas para alunos'
-    ],
-    suggestedSteps: [
-      'Compartilhe nos stories do Instagram com foco em "vagas de emprego".',
-      'Ofereça a jovens procurando o primeiro emprego ou transição de carreira.',
-      'Discorra sobre a importância de ter um currículo forte em momentos competitivos.'
-    ],
-    targetAudience: 'Jovens aspirantes, estudantes universitários e trabalhadores informais buscando colocação.',
-    detailsUrl: '/education/cursos-livres'
+    targetAudience: 'Estudantes, profissionais em transição de carreira e qualquer pessoa comprometida com evolução contínua.',
+    detailsUrl: '/education/soeh'
   },
   {
-    id: 'cicon100-ead',
-    name: 'CICON100 Cursos EAD',
-    vertical: 'Education',
-    price: 297, // pricing for comprehensive EAD access / specific certifications
-    commissionRate: 0.80, // R$ 237,60 to salesperson
-    hubSplitRate: 0.20,
-    description: 'Plataforma completa de cursos Livres, Preparatórios de Concurso e Especializações do CICON100. Mais de 300 cursos online com certificados válidos.',
-    recurrent: false,
-    marketingHook: 'Qualificação profissional imediata e horas complementares acadêmicas. Estude na CICON100 por preços de alta acessibilidade!',
-    features: [
-      'Acesso a mais de 300 cursos de capacitação e aperfeiçoamento',
-      'Certificados válidos nacionalmente emitidos com agilidade',
-      'Aulas práticas dinâmicas EAD gravadas disponíveis no celular',
-      'Suporte estudantil e de tutoria pelo portal'
-    ],
-    suggestedSteps: [
-      'Foque em concurseiros e profissionais que precisam comprovar títulos ou horas complementares acadêmicas.',
-      'Divulgue os links oficiais www.cicon100.com.br integrados à sua ID nas mídias sociais.',
-      'Apresente como a qualificação rápida e de baixo custo pode acelerar contratações imediatas.'
-    ],
-    targetAudience: 'Estudantes, universitários com necessidade de horas, concorrentes de concursos públicos e trabalhadores buscando promoção rápida.',
-    detailsUrl: 'https://www.cicon100.com.br'
-  },
-  {
-    id: 'formacao-tecnica',
-    name: 'Formação Técnica Conecta',
-    vertical: 'Education',
-    price: 890,
-    commissionRate: 0.75, // R$ 667,50 to seller
-    hubSplitRate: 0.25,
-    description: 'Cursos técnicos rápidos oficiais homologados pelo MEC (Administração, Logística, TI ou Saúde bucal) com duração de 12 meses.',
-    recurrent: false,
-    marketingHook: 'Diploma técnico de alta demanda pelo MEC em apenas 1 ano. O caminho mais rápido para aprovação em concursos e salários melhores!',
-    features: [
-      'Diploma com registro no SISTEC/MEC',
-      'Metodologia híbrida flexível',
-      'Opção de parcelamento facilitado no boleto',
-      'Estágio garantido em empresas parcerias'
-    ],
-    suggestedSteps: [
-      'Identifique pessoas que trabalham como auxiliares ou assistentes na sua cidade.',
-      'Mostre os editais de concursos públicos que exigem formação técnica.',
-      'Utilize o agendamento de chamada consultiva com nosso consultor sênior.'
-    ],
-    targetAudience: 'Profissionais que buscam promoção rápida ou aprovação em vagas técnicas especializadas.',
-    detailsUrl: '/education/formacao-tecnica'
-  },
-  {
-    id: 'graduacao-ead',
-    name: 'Graduação & Pós-Graduação EAD',
-    vertical: 'Education',
-    price: 1800, // average tuition enrollment value
-    commissionRate: 0.80, // R$ 1440 to seller
-    hubSplitRate: 0.20,
-    description: 'Ampla grade de cursos superiores e MBAs 100% online, certificados de peso acadêmico e condições de financiamento exclusivas.',
-    recurrent: false,
-    marketingHook: 'Faça sua faculdade ou pós-graduação no seu tempo, com mensalidades que cabem no bolso e diploma igual ao presencial.',
-    features: [
-      'Nota máxima no MEC',
-      'Mais de 45 opções de cursos de graduação e MBA',
-      'Professores mestres e doutores',
-      'Material didático digital gratuito'
-    ],
-    suggestedSteps: [
-      'Importante: Use a folha de benefícios exclusivos do HUB (bolsas de até 50%).',
-      'Foque em profissionais formados que precisam de um MBA/pós para subir de cargo.',
-      'Ofereça o consultor educacional do HUB para ligar e fechar a matrícula para você.'
-    ],
-    targetAudience: 'Adultos que trabalham e precisam conciliar trabalho com estudos superiores.',
-    detailsUrl: '/education/graduacao-ead'
-  },
-
-  // VERTICAL BUSINESS
-  {
-    id: 'perfil-hmi',
-    name: 'Teste de Perfil Comportamental MDS / HMI',
+    id: 'em-breve',
+    name: 'Em breve - novas oportunidades',
     vertical: 'Business',
-    price: 150,
-    commissionRate: 0.75, // R$ 112,50 to seller
-    hubSplitRate: 0.25,
-    description: 'Mapeamento psicológico completo de perfil comportamental focado em liderança, inteligência emocional e direcionamento de carreiras.',
+    price: 0,
+    commissionRate: 0,
+    hubSplitRate: 0,
+    description: 'Catálogo de soluções de alta margem em homologação comercial para ampliar o faturamento dos consultores.',
     recurrent: false,
-    marketingHook: 'Descubra suas reais forças, bloqueios inconscientes e áreas de alta performance com o mapeamento comportamental definitivo.',
+    marketingHook: 'Mais soluções e novos splits de recorrência sendo negociados pela mesa de contratos da FLANX.',
     features: [
-      'Relatório analítico personalizado de mais de 20 páginas',
-      'Identificação de estilo de comunicação e liderança',
-      'Feedback gravado explicativo do laudo',
-      'Foco em desenvolvimento pessoal ou recrutamento'
+      'Novas parcerias comerciais estratégicas no radar',
+      'Processo simplificado de afiliação automática',
+      'Mantendo o mesmo modelo radial de splits integrados',
+      'Evolução contínua da sua franquia regional'
     ],
     suggestedSteps: [
-      'Destaque que este teste é usado por grandes empresas para contratação.',
-      'Aborde empreendedores locais que querem entender melhor seus sócios ou equipe.',
-      'Compartilhe sua própria experiência após fazer o teste comportamental do HUB.'
+      'Foque na consolidação da Telemedicina, Proteção Veicular, Energia Limpa e SOEH.',
+      'Acompanhe o canal de anúncios para liberação de novos produtos.',
+      'Aprimore seu perfil comportamental para estar pronto no lançamento.'
     ],
-    targetAudience: 'Empreendedores, líderes, candidatos a vagas executivas e profissionais de RH.',
-    detailsUrl: '/business/perfil-hmi'
-  },
-  {
-    id: 'maquininha-conecta',
-    name: 'Portfólio de Maquininhas Pro',
-    vertical: 'Business',
-    price: 100, // flat fee commission value per machine ordered
-    commissionRate: 0.80, // R$ 80 to seller
-    hubSplitRate: 0.20,
-    description: 'Credenciamento de maquininha de cartão de crédito para estabelecimentos comerciais com taxas super competitivas e repasse rápido.',
-    recurrent: false,
-    marketingHook: 'As menores taxas do mercado de cartões para o seu negócio. Troque de máquina e aumente sua margem líquida imediatamente!',
-    features: [
-      'Taxa zero no PIX e cartão no primeiro mês',
-      'Recebimento em 1 dia útil garantido',
-      'Bobina de impressão inclusa gratuitamente',
-      'Suporte técnico físico em até 24h na região'
-    ],
-    suggestedSteps: [
-      'Visite pequenos comércios (padarias, salões, lojas) do seu bairro de forma amigável.',
-      'Ofereça uma comparação direta do extrato de taxas atual deles.',
-      'Envie o link para eles adquirirem a máquina sem compromisso.'
-    ],
-    targetAudience: 'Comerciantes, feirantes, prestadores de serviços e autônomos locais.',
-    detailsUrl: '/business/maquininha-conecta'
-  },
-  {
-    id: 'pacote-vendas-acelerado',
-    name: 'Córtex de Vendas Mentoria',
-    vertical: 'Business',
-    price: 500,
-    commissionRate: 0.70, // R$ 350 to seller
-    hubSplitRate: 0.30,
-    description: 'Imersão de mentorias semanais focadas em prospecção ativa, fechamento de alto valor e metodologias modernas de vendas.',
-    recurrent: false,
-    marketingHook: 'Dobre seus fechamentos de vendas em 30 dias com o acompanhamento tático individualizado dos Master Trainers do HUB.',
-    features: [
-      '4 encontros ao vivo em grupo reduzido ou individual',
-      'Scripts validados para cold WhatsApp e telefone',
-      'Correção de funil de vendas passo a passo',
-      'Acesso de 1 ano aos playbooks do HUB'
-    ],
-    suggestedSteps: [
-      'Ofereça para consultores de outros ramos que estão estagnados.',
-      'Foque no retorno do investimento: "1 fechamento extra paga a mentoria inteira".',
-      'Use o depoimento de quem alcançou R$ 10k/mês após a imersão.'
-    ],
-    targetAudience: 'Vendedores, corretores, consultores autônomos e empresários com dificuldade de vender.',
-    detailsUrl: '/business/pacote-vendas-acelerado'
+    targetAudience: 'Empreendedores e consultores interessados em diversificação de portfólio de alta margem.',
+    detailsUrl: '/business/em-breve'
   }
 ];
 

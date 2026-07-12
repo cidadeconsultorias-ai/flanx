@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ConsultantState, SimulatedSale, LeadInfo } from '../types';
+import { ConsultantState, SimulatedSale, LeadInfo, ConsultantLevel } from '../types';
 import { HUB_PRODUCTS, MATRIX_ITEMS } from '../data';
 import { 
   Users, 
@@ -168,11 +168,11 @@ export default function AdminControlView({
   };
 
   // FRANCHISEE LEVEL MANUAL PROMOTE
-  const handlePromoteLevel = (franId: string, currentLevel: 'Junior' | 'Premium' | 'Master') => {
-    const nextLevelMap: Record<string, 'Junior' | 'Premium' | 'Master'> = {
-      'Junior': 'Premium',
-      'Premium': 'Master',
-      'Master': 'Junior'
+  const handlePromoteLevel = (franId: string, currentLevel: ConsultantLevel) => {
+    const nextLevelMap: Record<ConsultantLevel, ConsultantLevel> = {
+      'Junior': 'Supervisor',
+      'Supervisor': 'Gerente',
+      'Gerente': 'Junior'
     };
     
     setFranchisees(prev => prev.map(f => {

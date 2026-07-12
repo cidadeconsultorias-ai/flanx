@@ -178,68 +178,68 @@ export default function HierarchyView({ consultant, setConsultant }: HierarchyVi
                 </span>
               )}
             </div>
-            <h4 className="font-sans font-black text-black mt-3 text-sm uppercase">Consultor Júnior</h4>
+            <h4 className="font-sans font-black text-black mt-3 text-sm uppercase">Produtor Júnior</h4>
             <p className="text-xs text-gray-700 font-semibold mt-1">
-              Foco inicial em vendas simplificadas e menor complexidade: Telemedicina individual, Cursos Livres e Energia Solar.
+              Foco inicial na entrega direta: ganha 50% do primeiro pagamento + 20% recorrente em Telemedicina, 75% na adesão da Proteção Veicular, e comissões recorrentes em Energia Limpa e SOEH.
             </p>
 
             <ul className="text-[10px] font-sans text-gray-800 font-bold mt-3 space-y-1 list-disc list-inside">
               <li>Como Entra: Teste comportamental concluído</li>
-              <li>Material: Recebe páginas prontas e criativos</li>
+              <li>Material: Páginas prontas, copys persuasivas e criativos</li>
             </ul>
           </div>
 
           {/* LEVEL 2 CARD */}
           <div className={`p-4 border-2 border-black transition-all rounded-none ${
-            consultant.level === 'Premium' 
+            consultant.level === 'Supervisor' 
               ? 'bg-amber-400 border-4 shadow-none translate-y-0.5 font-bold' 
               : 'bg-white'
           }`} id="career_card_premium">
             <div className="flex justify-between items-center">
               <span className="text-[9px] font-mono tracking-wider font-black bg-white px-2 py-0.5 border border-black text-black">
-                NÍVEL 2 (PRODUTOR)
+                NÍVEL 2 (LIDERANÇA)
               </span>
-              {consultant.level === 'Premium' && (
+              {consultant.level === 'Supervisor' && (
                 <span className="text-[10px] font-sans text-emerald-700 font-black flex items-center gap-1 uppercase">
-                  ● Ativo
+                  ● Nível Atual
                 </span>
               )}
             </div>
-            <h4 className="font-sans font-black text-black mt-3 text-sm uppercase">Consultor Premium</h4>
+            <h4 className="font-sans font-black text-black mt-3 text-sm uppercase">Supervisor</h4>
             <p className="text-xs text-gray-750 font-semibold mt-1">
-              Libera soluções de alta margem: Formação Técnica MEC, Pós-Graduação EAD e pacotes de Telemedicina corporativos.
+              Ganho total de Produtor Júnior + comissão de 10% recorrente sobre todo o faturamento da sua equipe de vendas.
             </p>
 
             <ul className="text-[10px] font-sans text-gray-800 font-bold mt-3 space-y-1 list-disc list-inside">
               <li>Como Avança: 8 vendas simuladas no Portal</li>
-              <li>Aceleração: Leads centralizados enviados ao WhatsApp</li>
+              <li>Aceleração: Acesso ao fundo cooperado de tráfego pago</li>
             </ul>
           </div>
 
           {/* LEVEL 3 CARD */}
           <div className={`p-4 border-2 border-black transition-all rounded-none ${
-            consultant.level === 'Master' 
+            consultant.level === 'Gerente' 
               ? 'bg-orange-500 border-4 text-white shadow-none translate-y-0.5' 
               : 'bg-white'
           }`} id="career_card_master">
             <div className="flex justify-between items-center">
               <span className="text-[9px] font-mono tracking-wider font-black bg-white text-black px-2 py-0.5 border border-black">
-                NÍVEL 3 (ELITE)
+                NÍVEL 3 (DIREÇÃO)
               </span>
-              {consultant.level === 'Master' && (
+              {consultant.level === 'Gerente' && (
                 <span className="text-[10px] font-sans text-white font-black flex items-center gap-1 uppercase">
-                  ● Nível Máximo
+                  ● Nível Atual
                 </span>
               )}
             </div>
-            <h4 className={`font-sans font-black mt-3 text-sm uppercase ${consultant.level === 'Master' ? 'text-white' : 'text-black'}`}>Parceiro Master</h4>
-            <p className={`text-xs mt-1 font-semibold ${consultant.level === 'Master' ? 'text-white' : 'text-gray-750'}`}>
-              Liberado para diagnosticar perfis locais, oferecer mentorias corporativas individuais e comissões por afiliação simples.
+            <h4 className={`font-sans font-black mt-3 text-sm uppercase ${consultant.level === 'Gerente' ? 'text-white' : 'text-black'}`}>Gerente</h4>
+            <p className={`text-xs mt-1 font-semibold ${consultant.level === 'Gerente' ? 'text-white' : 'text-gray-750'}`}>
+              Todos os ganhos anteriores (Júnior + Supervisor) aditivados com 5% sobre os ganhos de todos os supervisores de sua rede regional.
             </p>
 
-            <ul className={`text-[10px] font-sans mt-3 space-y-1 list-disc list-inside font-bold ${consultant.level === 'Master' ? 'text-white' : 'text-gray-800'}`}>
-              <li>Como Avança: Liderança e consistência de vendas regionais</li>
-              <li>Comissões aditivas de suporte integrado ao HUB</li>
+            <ul className={`text-[10px] font-sans mt-3 space-y-1 list-disc list-inside font-bold ${consultant.level === 'Gerente' ? 'text-white' : 'text-gray-800'}`}>
+              <li>Como Avança: Consistência em suporte comercial e liderança</li>
+              <li>Exclusividade: Distribuição direta de leads regionais de alta conversão</li>
             </ul>
           </div>
         </div>
@@ -453,13 +453,13 @@ export default function HierarchyView({ consultant, setConsultant }: HierarchyVi
             <div className="space-y-1.5 text-left md:max-w-md">
               <span className="text-[10px] font-mono text-amber-400 uppercase font-black tracking-widest flex items-center gap-1">
                 <Flame className="w-4 h-4 text-amber-400 animate-pulse stroke-[2.5]" />
-                CÉLULA DE ACELERAÇÃO (EXCLUSIVO PREMIUM)
+                CÉLULA DE ACELERAÇÃO (EXCLUSIVO SUPERVISORES & GERENTES)
               </span>
               <h3 className="font-sans font-black text-lg uppercase tracking-tight">
                 Fundo de Anúncios Cooperados do HUB
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed font-semibold">
-                Quando você atingir 8 prospecções de sucesso, seu nível será promovido para Consultor Premium. Isso ativa seu acesso imediato à célula de tráfego, encaminhando mensagens de interessados da sua cidade direto para seu WhatsApp de atendimento.
+                Quando você atingir 8 prospecções de sucesso, seu nível será promovido para Supervisor. Isso ativa seu acesso imediato à célula de tráfego pago, encaminhando mensagens de interessados da sua região direto para seu WhatsApp de atendimento.
               </p>
             </div>
 
@@ -474,7 +474,7 @@ export default function HierarchyView({ consultant, setConsultant }: HierarchyVi
                 <>
                   <KeyRound className="w-6 h-6 text-[#10b981] mx-auto mb-1.5 animate-bounce stroke-[2.5]" />
                   <span className="text-[9px] text-emerald-600 block font-black uppercase tracking-widest">Aceleração Ativada!</span>
-                  <span className="text-[9px] text-emerald-700 block mt-1 uppercase font-bold">STATUS: PREMIUM</span>
+                  <span className="text-[9px] text-emerald-700 block mt-1 uppercase font-bold">STATUS: SUPERVISOR</span>
                 </>
               )}
             </div>
