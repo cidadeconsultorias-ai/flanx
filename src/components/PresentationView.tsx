@@ -38,7 +38,6 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
   const [protecaoVeicularSales, setProtecaoVeicularSales] = useState<number>(5);
   const [energiaLimpaSales, setEnergiaLimpaSales] = useState<number>(3);
   const [soehSales, setSoehSales] = useState<number>(8);
-  const [emBreveSales, setEmBreveSales] = useState<number>(2);
 
   // Network Simulator states
   const [simulatorTab, setSimulatorTab] = useState<'individual' | 'network'>('individual');
@@ -47,49 +46,52 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
   const [networkMaster, setNetworkMaster] = useState<number>(20);
   const [averageSalesPerPartner, setAverageSalesPerPartner] = useState<number>(3);
 
-  // Dynamic commission calculations based on level and product
+  // Dynamic commission calculations based on level and product matching exact user request parameters
   const getCommissionInfo = (prod: string, level: 'JUNIOR' | 'SUPERVISOR' | 'GERENTE') => {
     if (prod === 'telemedicina') {
-      if (level === 'JUNIOR') return { immediate: 40, recurrent: 16, label: "50% 1ª Mensalidade (R$ 40) + 20% Recorrente (R$ 16)" };
-      if (level === 'SUPERVISOR') return { immediate: 40, recurrent: 24, label: "50% 1ª Mensalidade (R$ 40) + 20% Recorrente + 10% Recorrente Equipe (R$ 24)" };
-      return { immediate: 40, recurrent: 25.2, label: "Ganhos anteriores + 5% bônus de gerência de equipe (R$ 25.20)" };
+      // Valor Individual: R$ 60.00/mês
+      // Júnior: 50% 1ª mensalidade (R$ 30.00) + 20% recorrente (R$ 12.00)
+      if (level === 'JUNIOR') return { immediate: 30, recurrent: 12, label: "50% 1ª Mensalidade (R$ 30,00) + 20% Recorrente (R$ 12,00)" };
+      if (level === 'SUPERVISOR') return { immediate: 30, recurrent: 18, label: "50% 1ª Mensalidade (R$ 30,00) + 20% Recorrente + R$ 6,00 de Equipe (R$ 18,00)" };
+      return { immediate: 30, recurrent: 21, label: "50% 1ª Mensalidade (R$ 30,00) + 20% Recorrente + R$ 9,00 de Gerência (R$ 21,00)" };
     }
     if (prod === 'protecao-veicular') {
-      if (level === 'JUNIOR') return { immediate: 90, recurrent: 15, label: "75% Adesão (R$ 90) + R$ 15 Recorrente" };
-      if (level === 'SUPERVISOR') return { immediate: 90, recurrent: 25, label: "75% Adesão (R$ 90) + R$ 15 Recorrente + R$ 10 Equipe" };
-      return { immediate: 90, recurrent: 30.75, label: "Ganhos anteriores + 5% bônus de gerência (R$ 30.75)" };
+      // Média do Valor da Adesão: R$ 350.00
+      // Júnior: 75% Adesão (R$ 262.50) + Recorrência mensal de R$ 15.00
+      if (level === 'JUNIOR') return { immediate: 262.5, recurrent: 15, label: "75% Adesão (R$ 262,50) + R$ 15,00 Recorrente" };
+      if (level === 'SUPERVISOR') return { immediate: 262.5, recurrent: 25, label: "75% Adesão (R$ 262,50) + R$ 15,00 Recorrente + R$ 10,00 Equipe (R$ 25,00)" };
+      return { immediate: 262.5, recurrent: 30, label: "75% Adesão (R$ 262,50) + R$ 15,00 Recorrente + R$ 15,00 Gerência (R$ 30,00)" };
     }
     if (prod === 'energia-limpa') {
-      if (level === 'JUNIOR') return { immediate: 0, recurrent: 15, label: "Comissão mensal recorrente de R$ 15,00" };
-      if (level === 'SUPERVISOR') return { immediate: 0, recurrent: 25, label: "Recorrente R$ 15 + R$ 10 Equipe (R$ 25,00)" };
-      return { immediate: 0, recurrent: 30, label: "Ganhos anteriores + R$ 5 bônus de gerência (R$ 30,00)" };
+      // Energia: 10% sobre conta de luz de valor mínimo de R$ 300.00 (Mínimo R$ 30.00 recorrente)
+      if (level === 'JUNIOR') return { immediate: 0, recurrent: 30, label: "10% da Fatura Mínima de R$ 300 (R$ 30,00 Recorrente)" };
+      if (level === 'SUPERVISOR') return { immediate: 0, recurrent: 40, label: "10% da Fatura (R$ 30,00) + R$ 10,00 de Equipe (R$ 40,00 Recorrente)" };
+      return { immediate: 0, recurrent: 45, label: "10% da Fatura (R$ 30,00) + R$ 15,00 de Gerência (R$ 45,00 Recorrente)" };
     }
     if (prod === 'soeh') {
-      if (level === 'JUNIOR') return { immediate: 0, recurrent: 15, label: "30% de afiliação recorrente mensal (R$ 15,00)" };
-      if (level === 'SUPERVISOR') return { immediate: 0, recurrent: 20, label: "Recorrente R$ 15 + R$ 5 Equipe (R$ 20,00)" };
-      return { immediate: 0, recurrent: 25, label: "Ganhos anteriores + R$ 5 bônus de gerência (R$ 25,00)" };
+      // SOEH: Assinatura Básica de R$ 37.70, Comissão Recorrente de 15% (R$ 5.66)
+      if (level === 'JUNIOR') return { immediate: 0, recurrent: 5.66, label: "15% de Recorrência Básica (R$ 5,66 Recorrente)" };
+      if (level === 'SUPERVISOR') return { immediate: 0, recurrent: 7.50, label: "15% Recorrência (R$ 5,66) + R$ 1,84 de Equipe (R$ 7,50 Recorrente)" };
+      return { immediate: 0, recurrent: 9.00, label: "15% Recorrência (R$ 5,66) + R$ 3,34 de Gerência (R$ 9,00 Recorrente)" };
     }
-    return { immediate: 0, recurrent: 50, label: "Estime comissões futuras de lançamentos" };
+    return { immediate: 0, recurrent: 0, label: "Opção Futura" };
   };
 
   const commTelemedicina = getCommissionInfo('telemedicina', partnerLevel);
   const commProtecao = getCommissionInfo('protecao-veicular', partnerLevel);
   const commEnergia = getCommissionInfo('energia-limpa', partnerLevel);
   const commSoeh = getCommissionInfo('soeh', partnerLevel);
-  const commEmBreve = getCommissionInfo('em-breve', partnerLevel);
 
   const revTelemedicina = telemedicinaSales * (commTelemedicina.immediate + commTelemedicina.recurrent);
   const revProtecao = protecaoVeicularSales * (commProtecao.immediate + commProtecao.recurrent);
   const revEnergia = energiaLimpaSales * (commEnergia.immediate + commEnergia.recurrent);
-  const revSoeh = soehSales * (commSoeh.immediate + commSoeh.recurrent);
-  const revEmBreve = emBreveSales * (commEmBreve.immediate + commEmBreve.recurrent);
+  const revSoeh = soehSales * (commSoeh.recurrent);
 
   const totalImmediateVal = (telemedicinaSales * commTelemedicina.immediate) + (protecaoVeicularSales * commProtecao.immediate);
   const totalRecurrentMouthlyVal = (telemedicinaSales * commTelemedicina.recurrent) + 
                                    (protecaoVeicularSales * commProtecao.recurrent) + 
                                    (energiaLimpaSales * commEnergia.recurrent) + 
-                                   (soehSales * commSoeh.recurrent) +
-                                   (emBreveSales * commEmBreve.recurrent);
+                                   (soehSales * commSoeh.recurrent);
   const grandTotalEstimated = totalImmediateVal + totalRecurrentMouthlyVal;
 
   // Network simulation math
@@ -478,6 +480,114 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
           </p>
         </div>
 
+        {/* OPÇÕES DE EMPREENDEDORISMO COMPARISON MATRIX */}
+        <div className="space-y-4">
+          <div className="border-b-2 border-black pb-2 flex items-center gap-2">
+            <span className="w-2.5 h-2.5 bg-amber-500 animate-pulse rounded-full"></span>
+            <h4 className="text-sm font-mono font-black uppercase text-slate-800 tracking-wider">
+              Opções de Empreendimento - Como e Quanto Ganhar
+            </h4>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                id: 'telemedicina',
+                title: '1. Telemedicina Conecta',
+                icon: HeartHandshake,
+                desc: 'Plataforma de saúde inteligente com teleconsultas 24 horas por dia sem filas e descontos em farmácias.',
+                howToEarn: 'Divulgação de assinaturas de telemedicina individual ou familiar.',
+                whatYouEarn: '50% de comissão na primeira mensalidade do cliente + 20% de recorrência mensal ativa.',
+                averageVal: 'R$ 60,00 /mês',
+                commissionVal: 'R$ 30,00 (Adesão) + R$ 12,00/mês recorrente por cliente.',
+                badge: 'Saúde 24h',
+                badgeBg: 'bg-indigo-100 text-indigo-800 border-indigo-300'
+              },
+              {
+                id: 'protecao',
+                title: '2. Proteção Veicular',
+                icon: Car,
+                desc: 'Proteção integral contra colisão, roubo, furto, incêndio e assistência 24h sem análise de perfil.',
+                howToEarn: 'Indicação de proprietários de carros, motos e utilitários.',
+                whatYouEarn: '75% do valor integral de adesão pago pelo cliente + comissão mensal recorrente.',
+                averageVal: 'R$ 350,00 (Adesão)',
+                commissionVal: 'R$ 262,50 (Adesão) + R$ 15,00/mês recorrente por veículo.',
+                badge: 'Alta Conversão',
+                badgeBg: 'bg-emerald-100 text-emerald-800 border-emerald-300'
+              },
+              {
+                id: 'soeh',
+                title: '3. SOEH Desenvolvimento',
+                icon: BookOpen,
+                desc: 'Clube de desenvolvimento pessoal, autoconhecimento, inteligência emocional e soft skills.',
+                howToEarn: 'Promoção de assinaturas básicas do clube através de links de afiliado.',
+                whatYouEarn: '15% de comissão recorrente todos os meses enquanto a assinatura estiver ativa.',
+                averageVal: 'R$ 37,70 /mês',
+                commissionVal: 'R$ 5,66/mês recorrente por aluno ativo.',
+                badge: 'Recorrência EAD',
+                badgeBg: 'bg-purple-100 text-purple-800 border-purple-300'
+              },
+              {
+                id: 'energia',
+                title: '4. Energia Limpa',
+                icon: Zap,
+                desc: 'Economia imediata e garantida de até 15% na conta de luz de residências ou empresas. Sem obras ou placas.',
+                howToEarn: 'Indicação simples de faturas de energia (mínimo de R$ 300,00/mês).',
+                whatYouEarn: '10% de comissão recorrente mensal sobre o valor total da fatura indicada e conectada.',
+                averageVal: 'R$ 300,00 (Fatura Mín.)',
+                commissionVal: '10% da fatura (Mín. R$ 30,00/mês recorrente por conta).',
+                badge: 'Contrato Vitalício',
+                badgeBg: 'bg-amber-100 text-amber-800 border-amber-300'
+              }
+            ].map(item => {
+              const Icon = item.icon;
+              return (
+                <div key={item.id} className="border-4 border-black p-5 flex flex-col justify-between space-y-4 bg-slate-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className={`text-[9px] font-mono font-bold px-2 py-0.5 uppercase border border-black ${item.badgeBg}`}>
+                        {item.badge}
+                      </span>
+                      <Icon className="w-5 h-5 text-amber-500" />
+                    </div>
+                    
+                    <h5 className="font-sans font-black text-sm uppercase text-slate-900 border-b-2 border-black pb-1.5">
+                      {item.title}
+                    </h5>
+
+                    <div className="space-y-2 text-[11px] leading-relaxed text-slate-700">
+                      <div>
+                        <strong className="text-black block uppercase text-[9px] font-mono text-slate-500">O que é:</strong>
+                        <p>{item.desc}</p>
+                      </div>
+                      <div>
+                        <strong className="text-black block uppercase text-[9px] font-mono text-slate-500">Como Empreender:</strong>
+                        <p className="font-semibold text-slate-900">{item.howToEarn}</p>
+                      </div>
+                      <div>
+                        <strong className="text-black block uppercase text-[9px] font-mono text-slate-500">Como você ganha:</strong>
+                        <p className="font-bold text-slate-950 bg-amber-50 p-1.5 border-l-2 border-amber-500">{item.whatYouEarn}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t-2 border-black bg-white -mx-5 -mb-5 p-4 space-y-1">
+                    <div className="flex justify-between text-[10px] text-slate-500">
+                      <span>Valor Médio Base:</span>
+                      <strong className="text-slate-800 font-mono font-black">{item.averageVal}</strong>
+                    </div>
+                    <div className="flex justify-between text-[11px] items-baseline">
+                      <span className="text-slate-900 font-black uppercase text-[9px]">Sua Comissão:</span>
+                      <strong className="text-emerald-600 font-sans font-black text-right text-xs">
+                        {item.commissionVal}
+                      </strong>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Tab selection */}
         <div className="flex flex-col sm:flex-row border-2 border-black" id="simulator_tab_nav">
           <button
@@ -578,115 +688,104 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
               {/* Slider 1: Telemedicina Sales */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="font-extrabold text-slate-800 uppercase">1. Telemedicina Conecta (Assinaturas/mês)</span>
-                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                  <span className="font-extrabold text-slate-800 uppercase flex items-center gap-1.5">
+                    <HeartHandshake className="w-4 h-4 text-amber-500" />
+                    <span>1. Clientes de Telemedicina (R$ 60,00/mês)</span>
+                  </span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2.5 py-0.5 rounded-sm font-black text-xs">
                     {telemedicinaSales} un
                   </span>
                 </div>
                 <input 
                   type="range" 
                   min="0" 
-                  max="50" 
+                  max="100" 
                   value={telemedicinaSales}
                   onChange={(e) => setTelemedicinaSales(Number(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
                 />
-                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
-                  <span>0 vendas</span>
-                  <span>Mensalidade: R$ 80,00 | Comissão Ativa: {commTelemedicina.label}</span>
-                  <span>50 vendas</span>
+                <div className="flex justify-between text-[9px] text-zinc-500 font-mono">
+                  <span>0 clientes</span>
+                  <span className="text-slate-700 font-semibold">{commTelemedicina.label}</span>
+                  <span>100 clientes</span>
                 </div>
               </div>
 
               {/* Slider 2: Proteção Veicular */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="font-extrabold text-slate-800 uppercase">2. Proteção Veicular (Adesões/mês)</span>
-                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                  <span className="font-extrabold text-slate-800 uppercase flex items-center gap-1.5">
+                    <Car className="w-4 h-4 text-amber-500" />
+                    <span>2. Clientes de Proteção Veicular (Adesão R$ 350,00)</span>
+                  </span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2.5 py-0.5 rounded-sm font-black text-xs">
                     {protecaoVeicularSales} un
                   </span>
                 </div>
                 <input 
                   type="range" 
                   min="0" 
-                  max="30" 
+                  max="50" 
                   value={protecaoVeicularSales}
                   onChange={(e) => setProtecaoVeicularSales(Number(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
                 />
-                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                <div className="flex justify-between text-[9px] text-zinc-500 font-mono">
                   <span>0 adesões</span>
-                  <span>Mensalidade Base: R$ 120,00 | Comissão Ativa: {commProtecao.label}</span>
-                  <span>30 adesões</span>
+                  <span className="text-slate-700 font-semibold">{commProtecao.label}</span>
+                  <span>50 adesões</span>
                 </div>
               </div>
 
               {/* Slider 3: Energia Limpa */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="font-extrabold text-slate-800 uppercase">3. Energia Limpa - Desconto na Conta (Contratos/mês)</span>
-                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                  <span className="font-extrabold text-slate-800 uppercase flex items-center gap-1.5">
+                    <Zap className="w-4 h-4 text-amber-500" />
+                    <span>3. Indicações de Energia Limpa (Fatura de Luz)</span>
+                  </span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2.5 py-0.5 rounded-sm font-black text-xs">
                     {energiaLimpaSales} un
                   </span>
                 </div>
                 <input 
                   type="range" 
                   min="0" 
-                  max="20" 
+                  max="30" 
                   value={energiaLimpaSales}
                   onChange={(e) => setEnergiaLimpaSales(Number(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
                 />
-                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
-                  <span>0 indicações</span>
-                  <span>Desconto na conta | Comissão recorrente mensal: {commEnergia.label}</span>
-                  <span>20 indicações</span>
+                <div className="flex justify-between text-[9px] text-zinc-500 font-mono">
+                  <span>0 contas</span>
+                  <span className="text-slate-700 font-semibold">{commEnergia.label}</span>
+                  <span>30 contas</span>
                 </div>
               </div>
 
-              {/* Slider 4: SOEH - Desenvolvimento Pessoal */}
+              {/* Slider 4: SOEH */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="font-extrabold text-slate-800 uppercase">4. SOEH - Desenvolvimento Pessoal (Assinaturas/mês)</span>
-                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
+                  <span className="font-extrabold text-slate-800 uppercase flex items-center gap-1.5">
+                    <BookOpen className="w-4 h-4 text-amber-500" />
+                    <span>4. Assinaturas SOEH (R$ 37,70/mês)</span>
+                  </span>
+                  <span className="font-mono bg-slate-900 text-amber-400 px-2.5 py-0.5 rounded-sm font-black text-xs">
                     {soehSales} un
                   </span>
                 </div>
                 <input 
                   type="range" 
                   min="0" 
-                  max="40" 
+                  max="100" 
                   value={soehSales}
                   onChange={(e) => setSoehSales(Number(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
                 />
-                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
+                <div className="flex justify-between text-[9px] text-zinc-500 font-mono">
                   <span>0 assinaturas</span>
-                  <span>Mensalidade: R$ 50,00 | Comissão recorrente: {commSoeh.label}</span>
-                  <span>40 assinaturas</span>
-                </div>
-              </div>
-
-              {/* Slider 5: Em breve - Novas Oportunidades */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="font-extrabold text-slate-800 uppercase">5. Em Breve - Novas Oportunidades (Projeção/mês)</span>
-                  <span className="font-mono bg-slate-900 text-amber-400 px-2 py-0.5 rounded-sm font-black">
-                    {emBreveSales} un
-                  </span>
-                </div>
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="15" 
-                  value={emBreveSales}
-                  onChange={(e) => setEmBreveSales(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" 
-                />
-                <div className="flex justify-between text-[9px] text-zinc-400 font-mono">
-                  <span>0 projeções</span>
-                  <span>Novos produtos homologados | Comissão estimada: {commEmBreve.label}</span>
-                  <span>15 projeções</span>
+                  <span className="text-slate-700 font-semibold">{commSoeh.label}</span>
+                  <span>100 assinaturas</span>
                 </div>
               </div>
 
@@ -700,37 +799,30 @@ export default function PresentationView({ onGoToOnboarding, globalSplitRate }: 
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                  <span className="text-slate-400">Telemedicina Conecta:</span>
+                  <span className="text-slate-400">1. Telemedicina Conecta:</span>
                   <span className="font-mono text-white font-bold">
                     R$ {revTelemedicina.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
                 
                 <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                  <span className="text-slate-400">Proteção Veicular:</span>
+                  <span className="text-slate-400">2. Proteção Veicular:</span>
                   <span className="font-mono text-white font-bold">
                     R$ {revProtecao.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                  <span className="text-slate-400">Energia Limpa:</span>
+                  <span className="text-slate-400">3. Energia Limpa:</span>
                   <span className="font-mono text-white font-bold">
                     R$ {revEnergia.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                  <span className="text-slate-400">Programa SOEH:</span>
+                  <span className="text-slate-400">4. Programa SOEH:</span>
                   <span className="font-mono text-white font-bold">
                     R$ {revSoeh.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
-                  <span className="text-slate-400">Novas Oportunidades:</span>
-                  <span className="font-mono text-white font-bold">
-                    R$ {revEmBreve.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
               </div>
